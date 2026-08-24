@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="TedarikciKarsilastirma" version="1.0.0" display-name-key="Tedarikci Karsilastirma" description-key="Talebe ait ic tedarikci tekliflerini skorlar ve piyasa arastirmasi bulgulariyla yan yana gosterir." control-type="virtual" >
+    <!-- Veri yalnizca Dataverse Web API uzerinden okunur; harici servis kullanilmaz. -->
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- Kontrolun formda tutundugu alan. Icerik tamamen Web API'den geldigi icin bu
+         alanin degeri okunmaz/yazilmaz; sadece kontrolun forma yerlesmesini saglar.
+         Talepler formunda kullanilmayan tek satirlik bir metin alanina baglanmalidir. -->
+    <property name="ankraj" display-name-key="Baglanacak alan" description-key="Kontrolun yerlestirilecegi tasiyici metin alani. Degeri kullanilmaz." of-type="SingleLine.Text" usage="bound" required="true" />
+
+    <property name="paraBirimi" display-name-key="Para birimi" description-key="Fiyatlarin gosteriminde kullanilacak ISO para birimi kodu. Varsayilan: TRY." of-type="SingleLine.Text" usage="input" required="false" />
+
+    <property name="kategoriFiltresi" display-name-key="Kategoriye gore filtrele" description-key="Acik ise yalnizca talebin urun kategorisindeki tedarikciler listelenir." of-type="TwoOptions" usage="input" required="false" default-value="true" />
+
+    <property name="siparisOlustur" display-name-key="Siparis yoksa olustur" description-key="Acik ise, talebe bagli siparis kaydi yokken tedarikci secildiginde yeni bir siparis kaydi acilir." of-type="TwoOptions" usage="input" required="false" default-value="false" />
+
+    <!-- Yalnizca React platform library'si kullanilir. Fluent platform library'si
+         bilerek kaldirildi: desteklenen surumu ortamdan ortama degisiyor ve
+         import sirasinda "not supported by the platform" hatasina yol aciyor.
+         Butun stiller asagidaki css kaynagindan gelir. -->
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/TedarikciKarsilastirma.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+  </control>
+</manifest>

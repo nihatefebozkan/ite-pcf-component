@@ -1,0 +1,743 @@
+/*
+ * Tedarikçi Karşılaştırma — kontrol stilleri.
+ *
+ * PCF css kaynakları sayfaya global olarak enjekte edilir, bu yüzden her seçici
+ * `nek-tk` ön ekiyle ad alanına alınmıştır (NihatEkipman / TedarikciKarsilastirma).
+ * Model-driven formun kendi stillerine sızmaması için bu ön ek dışına çıkmayın.
+ *
+ * Tüm renk ve ölçü kararları .nek-tk üzerindeki custom property'lerde toplanır;
+ * TypeScript tarafı yalnızca durum sınıfı (is-strong / is-warn ...) uygular,
+ * hiçbir renk değeri koda gömülü değildir.
+ */
+
+.nek-tk {
+    /* Kurumsal kimlik */
+    --nek-primary: #1e3a5f;
+    --nek-primary-hover: #16304f;
+    --nek-secondary: #4a90d9;
+    --nek-secondary-soft: #eaf2fb;
+    --nek-success: #2e7d5b;
+    --nek-success-soft: #e8f4ee;
+    --nek-warning: #d98e04;
+    --nek-warning-soft: #fdf3e0;
+    --nek-danger: #c0392b;
+    --nek-danger-soft: #fbebe9;
+
+    --nek-surface: #ffffff;
+    --nek-surface-sunken: #f7f9fc;
+    --nek-canvas: #f4f6f9;
+    --nek-border: #e4eaf1;
+    --nek-border-strong: #c9d4e1;
+
+    --nek-text: #1b2733;
+    --nek-text-muted: #5b6b7f;
+    --nek-text-faint: #8a97a8;
+
+    /* Dikey ritim */
+    --nek-xs: 4px;
+    --nek-sm: 8px;
+    --nek-md: 12px;
+    --nek-lg: 16px;
+    --nek-xl: 20px;
+    --nek-xxl: 24px;
+
+    --nek-radius-md: 8px;
+    --nek-radius-lg: 12px;
+    --nek-radius-pill: 999px;
+
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+        BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--nek-canvas);
+    color: var(--nek-text);
+    height: 100%;
+    box-sizing: border-box;
+    padding: var(--nek-xl) var(--nek-xxl);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--nek-xl);
+}
+
+.nek-tk *,
+.nek-tk *::before,
+.nek-tk *::after {
+    box-sizing: border-box;
+}
+
+/* ---------- Başlık ---------- */
+
+.nek-tk__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--nek-xl);
+    row-gap: var(--nek-md);
+    flex-wrap: wrap;
+}
+
+.nek-tk__title-block {
+    display: flex;
+    flex-direction: column;
+    row-gap: 6px;
+    min-width: 0;
+}
+
+.nek-tk__eyebrow {
+    font-size: 10.5px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    color: var(--nek-text-faint);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk__title {
+    margin: 0;
+    font-size: 27px;
+    line-height: 34px;
+    font-weight: 600;
+    color: var(--nek-primary);
+}
+
+.nek-tk__subtitle {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 19px;
+    color: var(--nek-text-muted);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk__side {
+    display: flex;
+    align-items: center;
+    gap: var(--nek-sm);
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+/* ---------- Rozetler ---------- */
+
+.nek-tk-chip {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: var(--nek-radius-pill);
+    white-space: nowrap;
+}
+
+.nek-tk-chip--status {
+    padding: 3px 12px;
+    background-color: var(--nek-secondary-soft);
+    color: var(--nek-primary);
+}
+
+.nek-tk-chip--priority {
+    padding: 3px 12px;
+    background-color: var(--nek-surface);
+    color: var(--nek-text-muted);
+    border: 1px solid var(--nek-border);
+}
+
+.nek-tk-chip--ai {
+    background-color: var(--nek-secondary-soft);
+    color: var(--nek-secondary);
+    flex-shrink: 0;
+}
+
+/* Ticari bir olgu, bir değerlendirme değil — dolgulu rozetlerle yarışmasın
+   diye çerçeveli. */
+.nek-tk-chip--contracted {
+    background-color: var(--nek-surface);
+    color: var(--nek-primary);
+    border: 1px solid var(--nek-border-strong);
+}
+
+.nek-tk-chip--selected {
+    background-color: var(--nek-success-soft);
+    color: var(--nek-success);
+}
+
+/* ---------- Butonlar ---------- */
+
+.nek-tk-btn {
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: var(--nek-radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nek-sm);
+    transition: background-color 120ms, border-color 120ms;
+}
+
+.nek-tk-btn:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.nek-tk-btn:focus-visible {
+    outline: 2px solid var(--nek-secondary);
+    outline-offset: 2px;
+}
+
+.nek-tk-btn--block {
+    width: 100%;
+}
+
+.nek-tk-btn--primary {
+    background-color: var(--nek-primary);
+    color: #ffffff;
+}
+
+.nek-tk-btn--primary:hover:not(:disabled) {
+    background-color: var(--nek-primary-hover);
+}
+
+.nek-tk-btn--outline {
+    background-color: var(--nek-surface);
+    color: var(--nek-primary);
+    border-color: var(--nek-border-strong);
+}
+
+.nek-tk-btn--outline:hover:not(:disabled) {
+    border-color: var(--nek-primary);
+}
+
+.nek-tk-btn--selected {
+    background-color: var(--nek-success-soft);
+    color: var(--nek-success);
+    border-color: var(--nek-success);
+}
+
+.nek-tk-btn--subtle {
+    background-color: transparent;
+    color: var(--nek-primary);
+}
+
+.nek-tk-btn--subtle:hover:not(:disabled) {
+    background-color: var(--nek-secondary-soft);
+}
+
+/* ---------- Özet şeridi ---------- */
+
+.nek-tk-strip {
+    background-color: var(--nek-surface);
+    border-radius: var(--nek-radius-lg);
+    border: 1px solid var(--nek-border);
+    padding: var(--nek-lg) var(--nek-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--nek-md) var(--nek-xxl);
+}
+
+.nek-tk-strip__item {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--nek-xs);
+    min-width: 0;
+}
+
+.nek-tk-strip__value {
+    font-size: 14.5px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--nek-primary);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk-strip__meta {
+    font-weight: 400;
+    color: var(--nek-text-muted);
+}
+
+/* Metrik ve şerit etiketleri — tek bir küçük büyük-harf stili. */
+.nek-tk-label {
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--nek-text-faint);
+}
+
+/* ---------- Sütun düzeni ---------- */
+
+.nek-tk__cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+    gap: var(--nek-xxl);
+    align-items: start;
+}
+
+/* Genişlik kontrolün kendi ayrılan alanından ölçülür (allocatedWidth);
+   form içindeki bir PCF için viewport medya sorgusu yanıltıcı olurdu. */
+.nek-tk--narrow .nek-tk__cols {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.nek-tk--narrow {
+    padding: var(--nek-lg);
+}
+
+.nek-tk__col {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--nek-md);
+    min-width: 0;
+}
+
+.nek-tk-section {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--nek-md);
+    row-gap: var(--nek-xs);
+    flex-wrap: wrap;
+}
+
+.nek-tk-section__text {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    min-width: 0;
+}
+
+.nek-tk-section__title {
+    margin: 0;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--nek-primary);
+}
+
+.nek-tk-section__note {
+    margin: 0;
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--nek-text-muted);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk__card-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--nek-sm);
+}
+
+/* ---------- Tedarikçi kartı ---------- */
+
+/* "Önerilen" sekmesi kartın üst kenarına taşıyor; taşan kısma yer açmak için
+   sarmalayıcı kullanılıyor. */
+.nek-tk-card-wrap {
+    position: relative;
+    padding-top: var(--nek-md);
+}
+
+.nek-tk-card {
+    background-color: var(--nek-surface);
+    border-radius: var(--nek-radius-lg);
+    border: 1px solid var(--nek-border);
+    padding: var(--nek-lg) var(--nek-xl) var(--nek-xl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--nek-md);
+    transition: border-color 150ms, box-shadow 150ms;
+}
+
+.nek-tk-card:hover {
+    border-color: var(--nek-border-strong);
+}
+
+.nek-tk-card--recommended {
+    border-color: var(--nek-secondary);
+    box-shadow: 0 2px 12px rgba(74, 144, 217, 0.14);
+}
+
+.nek-tk-card--selected {
+    border-color: var(--nek-success);
+}
+
+.nek-tk-card__tab {
+    position: absolute;
+    top: 0;
+    left: var(--nek-xl);
+    background-color: var(--nek-primary);
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    padding: 3px 12px;
+    border-radius: var(--nek-radius-pill);
+    z-index: 1;
+}
+
+.nek-tk-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--nek-md);
+}
+
+.nek-tk-card__heading {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    min-width: 0;
+}
+
+.nek-tk-card__name {
+    margin: 0;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--nek-primary);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk-card__category {
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--nek-text-muted);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk-card__price-row {
+    display: flex;
+    align-items: baseline;
+    column-gap: var(--nek-md);
+    row-gap: var(--nek-xs);
+    flex-wrap: wrap;
+}
+
+.nek-tk-card__price {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 700;
+    color: var(--nek-primary);
+}
+
+.nek-tk-card__lead {
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--nek-text-muted);
+}
+
+.nek-tk-card__rationale {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--nek-text-muted);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk-card__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+.nek-tk-card__metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    gap: var(--nek-sm) var(--nek-lg);
+    padding-top: var(--nek-md);
+    border-top: 1px solid var(--nek-border);
+}
+
+.nek-tk-metric {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    min-width: 0;
+}
+
+.nek-tk-metric__value {
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    color: var(--nek-text);
+}
+
+/* ---------- Skor ---------- */
+
+/* Öneri kartında çıplak büyük rakam, diğerlerinde halka — hiyerarşiyi
+   renk değil form taşıyor. */
+.nek-tk-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 52px;
+}
+
+.nek-tk-score--ring {
+    height: 52px;
+    border-radius: var(--nek-radius-pill);
+    border: 2px solid currentColor;
+}
+
+.nek-tk-score__value {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+}
+
+.nek-tk-score--bare .nek-tk-score__value {
+    font-size: 26px;
+    line-height: 30px;
+}
+
+.nek-tk-score__label {
+    font-size: 9px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: var(--nek-text-faint);
+}
+
+/* Skor bandı ve geç teslimat bandı — tek renk sözlüğü. */
+.nek-tk-tone--good {
+    color: var(--nek-success);
+}
+
+.nek-tk-tone--warn {
+    color: var(--nek-warning);
+}
+
+.nek-tk-tone--bad {
+    color: var(--nek-danger);
+}
+
+.nek-tk-tone--none {
+    color: var(--nek-text-faint);
+}
+
+/* ---------- Piyasa araştırması ---------- */
+
+.nek-tk-market {
+    background-color: var(--nek-surface);
+    border-radius: var(--nek-radius-lg);
+    border: 1px solid var(--nek-border);
+    overflow-x: hidden;
+}
+
+/* Satırlar ayrı kart değil; tek panel içinde saç teli çizgilerle ayrılıyor. */
+.nek-tk-market__row {
+    padding: var(--nek-md) var(--nek-lg);
+    display: flex;
+    flex-direction: column;
+    row-gap: 6px;
+}
+
+.nek-tk-market__row + .nek-tk-market__row {
+    border-top: 1px solid var(--nek-border);
+}
+
+.nek-tk-market__row--cheapest {
+    background-color: var(--nek-success-soft);
+}
+
+.nek-tk-market__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    column-gap: var(--nek-sm);
+}
+
+.nek-tk-market__source {
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    color: var(--nek-secondary);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.nek-tk-market__source:hover,
+.nek-tk-market__source:focus-visible {
+    text-decoration: underline;
+}
+
+.nek-tk-market__source--plain {
+    color: var(--nek-text-muted);
+}
+
+.nek-tk-market__price {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--nek-primary);
+    white-space: nowrap;
+}
+
+.nek-tk-market__product,
+.nek-tk-market__note {
+    margin: 0;
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--nek-text-muted);
+    overflow-wrap: anywhere;
+}
+
+.nek-tk-market__note {
+    padding-left: var(--nek-md);
+    position: relative;
+}
+
+.nek-tk-market__note-mark {
+    position: absolute;
+    left: 0;
+    color: var(--nek-text-faint);
+}
+
+.nek-tk-market__delta {
+    align-self: flex-start;
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: var(--nek-radius-pill);
+    white-space: nowrap;
+}
+
+.nek-tk-market__delta--cheap {
+    color: var(--nek-danger);
+    background-color: var(--nek-danger-soft);
+}
+
+.nek-tk-market__delta--pricey {
+    color: var(--nek-success);
+    background-color: var(--nek-success-soft);
+}
+
+.nek-tk-market__delta--same {
+    color: var(--nek-text-muted);
+    background-color: var(--nek-canvas);
+}
+
+.nek-tk-market__conclusion {
+    margin: 0;
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--nek-text-muted);
+    background-color: var(--nek-surface-sunken);
+    padding: var(--nek-md) var(--nek-lg);
+    border-top: 1px solid var(--nek-border);
+}
+
+.nek-tk-market__conclusion-label {
+    font-weight: 600;
+    color: var(--nek-primary);
+}
+
+/* ---------- Bildirim, boş ve yükleniyor durumları ---------- */
+
+.nek-tk-notice {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 18px;
+    padding: var(--nek-md) var(--nek-lg);
+    border-radius: var(--nek-radius-md);
+    border: 1px solid transparent;
+}
+
+.nek-tk-notice--success {
+    color: var(--nek-success);
+    background-color: var(--nek-success-soft);
+    border-color: var(--nek-success);
+}
+
+.nek-tk-notice--warning {
+    color: var(--nek-warning);
+    background-color: var(--nek-warning-soft);
+    border-color: var(--nek-warning);
+}
+
+.nek-tk-notice--error {
+    color: var(--nek-danger);
+    background-color: var(--nek-danger-soft);
+    border-color: var(--nek-danger);
+}
+
+.nek-tk-empty {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--nek-text-muted);
+    background-color: var(--nek-surface);
+    border-radius: var(--nek-radius-lg);
+    border: 1px dashed var(--nek-border);
+    padding: var(--nek-xxl) var(--nek-lg);
+    text-align: center;
+}
+
+.nek-tk-market .nek-tk-empty {
+    border: 0;
+    background-color: transparent;
+}
+
+.nek-tk-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: var(--nek-md);
+    padding: 64px 16px;
+    text-align: center;
+}
+
+.nek-tk-centered__text {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--nek-text-muted);
+    max-width: 460px;
+}
+
+.nek-tk-spinner {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--nek-radius-pill);
+    border: 3px solid var(--nek-border);
+    border-top-color: var(--nek-secondary);
+    animation: nek-tk-spin 800ms linear infinite;
+}
+
+.nek-tk-spinner--tiny {
+    width: 14px;
+    height: 14px;
+    border-width: 2px;
+    border-top-color: currentColor;
+}
+
+@keyframes nek-tk-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hareketi azalt tercihine saygı — dönme yerine nabız. */
+@media (prefers-reduced-motion: reduce) {
+    .nek-tk-spinner {
+        animation: nek-tk-pulse 1200ms ease-in-out infinite;
+    }
+
+    @keyframes nek-tk-pulse {
+        50% {
+            opacity: 0.4;
+        }
+    }
+}
