@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ScoredSupplier } from "../types";
 import { cx, scoreTone, delayTone, formatCurrency, formatNumber } from "./theme";
+import { withVat } from "../services/rules";
 import { Spinner } from "./Spinner";
 
 export interface ISupplierCardProps {
@@ -14,6 +15,8 @@ export interface ISupplierCardProps {
     /** Seçim butonu tümüyle devre dışı mı (salt okunur form, talep bağlamı yok vb.). */
     disabled: boolean;
     currency: string;
+    /** KDV yüzdesi — fiyatın altında KDV dahil karşılığını göstermek için. */
+    kdvOrani: number;
     onSelect: (supplier: ScoredSupplier) => void;
 }
 
@@ -31,8 +34,9 @@ const Metric: React.FC<IMetricProps> = ({ label, value, toneClass }) => (
 );
 
 export const SupplierCard: React.FC<ISupplierCardProps> = (props) => {
-    const { supplier, isRecommended, isSelected, isBusy, disabled, currency, onSelect } = props;
+    const { supplier, isRecommended, isSelected, isBusy, disabled, currency, kdvOrani, onSelect } = props;
     const tone = scoreTone(supplier.score);
+    const grossPrice = withVat(supplier.fiyat, kdvOrani);
 
     const handleSelect = React.useCallback(() => onSelect(supplier), [onSelect, supplier]);
 
@@ -70,6 +74,11 @@ export const SupplierCard: React.FC<ISupplierCardProps> = (props) => {
 
                 <div className="nek-tk-card__price-row">
                     <span className="nek-tk-card__price">{formatCurrency(supplier.fiyat, currency)}</span>
+                    {grossPrice !== null && (
+                        <span className="nek-tk-card__lead">
+                            KDV dahil {formatCurrency(grossPrice, currency)}
+                        </span>
+                    )}
                     {supplier.teslimSuresi !== null && (
                         <span className="nek-tk-card__lead">
                             ⏱ {formatNumber(supplier.teslimSuresi, " gün")} teslim

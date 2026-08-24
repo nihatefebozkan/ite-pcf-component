@@ -239,7 +239,14 @@ export async function assignSupplierToOrder(
         action = "created";
     }
 
-    let detailWarning: string | null = null;
+    const warnings: string[] = [];
+
+    // Lookup'ların gerçekten bağlandığını geri okuyarak doğrula. Navigation
+    // property adı yanlışsa yazma hata vermeden geçebiliyor; bu kontrol olmadan
+    // kullanıcı "atandı" mesajı görürken sipariş kaydı boş kalıyor.
+    const bindProblem = await verifyOrderLinks(webAPI, siparisId, action);
+    if (bindProblem) warnings.push(bindProblem);
+
     try {
         await webAPI.updateRecord(o.entity, siparisId, {
             [o.secimGerekcesi]: payload.secimGerekcesi,
@@ -247,10 +254,49 @@ export async function assignSupplierToOrder(
         });
     } catch (err) {
         const reason = err instanceof Error ? err.message : String(err);
-        detailWarning = `Gerekçe ve piyasa karşılaştırma metinleri siparişe yazılamadı: ${reason}`;
+        warnings.push(`Gerekçe ve piyasa karşılaştırma metinleri siparişe yazılamadı: ${reason}`);
     }
 
-    return { action, siparisId, detailWarning };
+    return { action, siparisId, detailWarning: warnings.length > 0 ? warnings.join(" ") : null };
+}
+
+/**
+ * Yazma sonrası sipariş kaydındaki lookup'ları geri okur. Boş kalan varsa
+ * sebebini anlatan bir uyarı döner; her şey yolundaysa null.
+ *
+ * Talep lookup'ı yalnızca yeni oluşturulan kayıtlarda kontrol edilir — güncelleme
+ * yolunda kayıt zaten Talep'e göre bulunmuştur, dolu olduğu kesindir.
+ */
+async function verifyOrderLinks(
+    webAPI: WebApi,
+    siparisId: string,
+    action: AssignResult["action"]
+): Promise<string | null> {
+    const o = Schema.siparis;
+
+    try {
+        const record = await webAPI.retrieveRecord(
+            o.entity,
+            siparisId,
+            `?$select=${o.tedarikciValue},${o.talepValue}`
+        );
+
+        const missing: string[] = [];
+        if (!asText(record[o.tedarikciValue])) missing.push(`Tedarici (${o.tedarikciNav})`);
+        if (action === "created" && !asText(record[o.talepValue])) missing.push(`Talep (${o.talepNav})`);
+
+        if (missing.length === 0) return null;
+
+        return (
+            `Sipariş kaydı yazıldı ancak şu lookup alanları boş kaldı: ${missing.join(", ")}. ` +
+            `Bu, @odata.bind için kullanılan navigation property adının ortamdakiyle ` +
+            `eşleşmediğine işaret eder; schema.ts içindeki talepNav/tedarikciNav değerlerini ` +
+            `ManyToOneRelationships metadata sorgusuyla doğrulayın.`
+        );
+    } catch {
+        // Doğrulama okuması başarısızsa asıl işlemi şüpheye düşürme; sessiz geç.
+        return null;
+    }
 }
 
 /** Talebe bağlı siparişte hâlihazırda seçili olan tedarikçinin id'si (yoksa null). */

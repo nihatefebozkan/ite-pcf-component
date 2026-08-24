@@ -18,6 +18,7 @@ import { SupplierCard } from "./SupplierCard";
 import { MarketResearchList } from "./MarketResearchList";
 import { SummaryStrip, ISummaryItem } from "./SummaryStrip";
 import { Spinner } from "./Spinner";
+import { Weights } from "../services/rules";
 import { cx, formatCurrency } from "./theme";
 
 export interface ISupplierComparisonProps {
@@ -29,6 +30,12 @@ export interface ISupplierComparisonProps {
     /** Talep kaydının görünen adı (contextInfo'dan). */
     talepAdi: string | null;
     currency: string;
+    /** Skor ağırlıkları — config/businessRules.ts'ten doğrulanarak gelir. */
+    weights: Weights;
+    /** KDV yüzdesi; kartlarda KDV dahil fiyatı göstermek için. */
+    kdvOrani: number;
+    /** İş kuralları dosyasında düzeltilen sorunlar; boş değilse banner çıkar. */
+    ruleWarnings: string[];
     /** Tedarikçileri, talebin UrunTipi değerine göre filtrele. */
     filterByCategory: boolean;
     /** Talebe bağlı sipariş yoksa yeni sipariş kaydı aç. */
@@ -64,6 +71,9 @@ export const SupplierComparison: React.FC<ISupplierComparisonProps> = (props) =>
         talepEntityName,
         talepAdi,
         currency,
+        weights,
+        kdvOrani,
+        ruleWarnings,
         filterByCategory,
         createOrderIfMissing,
         isDisabled,
@@ -121,7 +131,7 @@ export const SupplierComparison: React.FC<ISupplierComparisonProps> = (props) =>
                 if (cancelled) return;
 
                 setTalep(talepContext);
-                setSuppliers(scoreSuppliers(supplierRows));
+                setSuppliers(scoreSuppliers(supplierRows, weights));
                 setFindings(marketRows);
                 setSelectedId(currentSelection);
                 setNotice(talepWarning ? { tone: "warning", text: talepWarning } : null);
@@ -137,7 +147,7 @@ export const SupplierComparison: React.FC<ISupplierComparisonProps> = (props) =>
         return () => {
             cancelled = true;
         };
-    }, [webAPI, talepId, talepEntityName, talepAdi, filterByCategory, reloadToken]);
+    }, [webAPI, talepId, talepEntityName, talepAdi, filterByCategory, weights, reloadToken]);
 
     const assignSelection = React.useCallback(
         async (supplier: ScoredSupplier): Promise<void> => {
@@ -270,6 +280,13 @@ export const SupplierComparison: React.FC<ISupplierComparisonProps> = (props) =>
 
             <SummaryStrip items={summaryItems} />
 
+            {ruleWarnings.length > 0 && (
+                <p className="nek-tk-notice nek-tk-notice--warning" role="status">
+                    <strong>İş kuralları yapılandırması düzeltildi. </strong>
+                    {ruleWarnings.join(" ")}
+                </p>
+            )}
+
             {notice && (
                 <p className={cx("nek-tk-notice", `nek-tk-notice--${notice.tone}`)} role="status">
                     {notice.text}
@@ -304,6 +321,7 @@ export const SupplierComparison: React.FC<ISupplierComparisonProps> = (props) =>
                                     isSelected={supplier.id === selectedId}
                                     isBusy={busyId === supplier.id}
                                     currency={currency}
+                                    kdvOrani={kdvOrani}
                                     disabled={isDisabled || busyId !== null || !talepId}
                                     onSelect={handleSelect}
                                 />

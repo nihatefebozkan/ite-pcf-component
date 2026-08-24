@@ -60,8 +60,18 @@ export const Schema = {
         entity: `${PREFIX}siparisler`,
         id: `${PREFIX}siparislerid`,
         talepValue: `_${PREFIX}talep_value`,
-        talepNav: `${PREFIX}Talep`,
         tedarikciValue: `_${PREFIX}tedarikci_value`,
+        /**
+         * DOĞRULANMADI — `@odata.bind` öneki olarak kullanılan navigation property
+         * adları. Buradaki değerler lookup'ların attribute schema name'inden
+         * türetildi; genelde aynıdır ama ilişki oluşturulurken farklılaşabilir.
+         * Ortamdaki kesin değer için:
+         *   EntityDefinitions(LogicalName='cr545_siparisler')/ManyToOneRelationships
+         *     ?$select=ReferencingAttribute,ReferencingEntityNavigationPropertyName
+         * Yanlışlarsa lookup'lar boş kalır; assignSupplierToOrder bunu yazma
+         * sonrası geri okuyup uyarıya çeviriyor.
+         */
+        talepNav: `${PREFIX}Talep`,
         tedarikciNav: `${PREFIX}Tedarikci`,
         tutar: `${PREFIX}tutar`,
         secimGerekcesi: `${PREFIX}secimgerekcesi`,

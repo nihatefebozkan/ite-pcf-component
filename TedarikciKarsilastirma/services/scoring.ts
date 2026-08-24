@@ -1,4 +1,5 @@
 import { ScoreFactor, ScoredSupplier, Supplier } from "../types";
+import { WeightKey, Weights } from "./rules";
 
 /**
  * GEÇİCİ SKORLAMA — ileride AI Builder tahmin modeliyle değiştirilecek.
@@ -9,19 +10,23 @@ import { ScoreFactor, ScoredSupplier, Supplier } from "../types";
  */
 
 interface Criterion {
-    key: keyof Supplier;
+    key: WeightKey;
     label: string;
-    weight: number;
     /** true ise düşük değer daha iyidir (fiyat, teslim süresi, geç teslimat). */
     lowerIsBetter: boolean;
 }
 
+/**
+ * Kriterlerin yönü ve etiketi burada sabittir; AĞIRLIKLARI değildir —
+ * onlar config/businessRules.ts'ten gelir ve Copilot ajanı tarafından
+ * güncellenebilir.
+ */
 export const CRITERIA: Criterion[] = [
-    { key: "fiyat", label: "Fiyat", weight: 0.35, lowerIsBetter: true },
-    { key: "teslimSuresi", label: "Teslim süresi", weight: 0.2, lowerIsBetter: true },
-    { key: "gecTeslimatOrani", label: "Zamanında teslimat", weight: 0.2, lowerIsBetter: true },
-    { key: "surdurulebilirlikPuani", label: "Sürdürülebilirlik", weight: 0.15, lowerIsBetter: false },
-    { key: "garantiSuresi", label: "Garanti", weight: 0.1, lowerIsBetter: false },
+    { key: "fiyat", label: "Fiyat", lowerIsBetter: true },
+    { key: "teslimSuresi", label: "Teslim süresi", lowerIsBetter: true },
+    { key: "gecTeslimatOrani", label: "Zamanında teslimat", lowerIsBetter: true },
+    { key: "surdurulebilirlikPuani", label: "Sürdürülebilirlik", lowerIsBetter: false },
+    { key: "garantiSuresi", label: "Garanti", lowerIsBetter: false },
 ];
 
 const NEUTRAL = 0.5;
@@ -73,11 +78,11 @@ function buildRationale(factors: ScoreFactor[]): string {
  * Aday tedarikçileri skorlar ve skoru yüksekten düşüğe sıralar.
  * Sıralama kararlıdır: eşit skorda alfabetik sıraya düşer.
  */
-export function scoreSuppliers(suppliers: Supplier[]): ScoredSupplier[] {
+export function scoreSuppliers(suppliers: Supplier[], weights: Weights): ScoredSupplier[] {
     if (suppliers.length === 0) return [];
 
     // Her kriter için kümenin tamamındaki değerleri bir kez topla.
-    const columns = new Map<keyof Supplier, (number | null)[]>();
+    const columns = new Map<WeightKey, (number | null)[]>();
     for (const criterion of CRITERIA) {
         columns.set(
             criterion.key,
@@ -92,11 +97,12 @@ export function scoreSuppliers(suppliers: Supplier[]): ScoredSupplier[] {
                 numericValue(supplier, criterion.key),
                 criterion.lowerIsBetter
             );
+            const weight = weights[criterion.key];
             return {
                 label: criterion.label,
-                weight: criterion.weight,
+                weight,
                 normalized,
-                contribution: normalized * criterion.weight * 100,
+                contribution: normalized * weight * 100,
             };
         });
 
