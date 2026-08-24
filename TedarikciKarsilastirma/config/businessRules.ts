@@ -1,6 +1,6 @@
 // OTOMATIK URETILEN DOSYA - Copilot Studio bu dosyayi butunuyle degistirir.
 // Fonksiyon, import veya kosul EKLEMEYIN; dogrulama services/rules.ts icindedir.
-// ISTEK: test - fiyat agirligi 0.50 yapildi
+// ISTEK: test - fiyat 0.45, garanti 0.15
 // URETIM: Copilot Studio · 2026-08-24
 export interface RuleConfig {
     kdvOrani: number;
@@ -15,9 +15,9 @@ export interface RuleConfig {
 export const activeRules: RuleConfig = {
     kdvOrani: 20,
     paraBirimi: "TRY",
-    fiyatAgirligi: 0.5,
+    fiyatAgirligi: 0.45,
     teslimSuresiAgirligi: 0.2,
     gecTeslimatAgirligi: 0.1,
-    garantiAgirligi: 0.1,
+    garantiAgirligi: 0.15,
     surdurulebilirlikAgirligi: 0.1,
 };
