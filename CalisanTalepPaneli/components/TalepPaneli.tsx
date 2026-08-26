@@ -18,6 +18,8 @@ export interface ITalepPaneliProps {
     entityName: string;
     webAPI: ComponentFramework.WebApi;
     allocatedWidth: number | null;
+    /** Ayrılan yükseklik (px); kaydırma alanını bu belirler. */
+    allocatedHeight: number | null;
     /** Dataset'i yeniden çeker. */
     onRefresh: () => void;
 }
@@ -41,8 +43,15 @@ export const TalepPaneli: React.FC<ITalepPaneliProps> = (props) => {
         entityName,
         webAPI,
         allocatedWidth,
+        allocatedHeight,
         onRefresh,
     } = props;
+
+    // Izgara sayfası kontrole sabit bir yükseklik veriyor. Bunu aşmak yerine
+    // kabullenip içeride kaydırıyoruz — aksi halde alttaki kartlar kırpılıyor
+    // ve erişilemez hâle geliyor.
+    const rootStyle: React.CSSProperties =
+        allocatedHeight && allocatedHeight > 0 ? { height: `${allocatedHeight}px` } : {};
 
     const [gorunum, setGorunum] = React.useState<Gorunum>({ tip: "liste" });
     const [bildirim, setBildirim] = React.useState<string | null>(null);
@@ -95,7 +104,7 @@ export const TalepPaneli: React.FC<ITalepPaneliProps> = (props) => {
 
     if (gorunum.tip === "yeni") {
         return (
-            <div className={rootClass}>
+            <div className={rootClass} style={rootStyle}>
                 <div className="ctp__bar">
                     <div className="ctp__baslik-blok">
                         <h2 className="ctp__baslik">Yeni Talep</h2>
@@ -115,7 +124,7 @@ export const TalepPaneli: React.FC<ITalepPaneliProps> = (props) => {
 
     if (gorunum.tip === "detay" && acikTalep) {
         return (
-            <div className={rootClass}>
+            <div className={rootClass} style={rootStyle}>
                 <TalepDetay
                     talep={acikTalep}
                     webAPI={webAPI}
@@ -126,7 +135,7 @@ export const TalepPaneli: React.FC<ITalepPaneliProps> = (props) => {
     }
 
     return (
-        <div className={rootClass}>
+        <div className={rootClass} style={rootStyle}>
             <div className="ctp__bar">
                 <div className="ctp__baslik-blok">
                     <h2 className="ctp__baslik">Taleplerim</h2>

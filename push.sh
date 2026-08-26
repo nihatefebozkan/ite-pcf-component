@@ -1,37 +1,49 @@
 #!/usr/bin/env bash
-# Ajanın commit'ini al, manifest sürümünü artır, ortama yayınla.
+# İki PCF kontrolünü birden derleyip ortama aktarır.
 #
-# Sürüm artırımı zorunlu: Dataverse, sürümü değişmeyen bir kontrolün
-# kaynaklarını güncellemiyor. Push "başarılı" der ama ekranda hiçbir şey
-# değişmez.
+# `pac pcf push` kullanılmıyor çünkü iki sebeple uygun değil:
+#   1. Projede birden fazla ControlManifest.Input.xml varsa reddediyor.
+#   2. Her zaman development modunda derliyor (büyük, sıkıştırılmamış bundle).
+# Çözüm yolu iki kontrolü birden paketler ve Release'de production bundle üretir.
 set -euo pipefail
-
-MANIFEST="TedarikciKarsilastirma/ControlManifest.Input.xml"
-PREFIX="ite"
-
 cd "$(dirname "$0")"
+
+SOLUTION_DIR="TedarikciKarsilastirmaSolution"
+UNMANAGED_ZIP="$SOLUTION_DIR/bin/Release/TedarikciKarsilastirmaSolution.zip"
+
+MANIFESTS=(
+    "TedarikciKarsilastirma/ControlManifest.Input.xml"
+    "CalisanTalepPaneli/ControlManifest.Input.xml"
+)
 
 echo "→ GitHub'dan çekiliyor..."
 git pull origin main
 
-# <control> etiketindeki üç parçalı sürümü bul (XML bildirimindeki
-# iki parçalı version="1.0" ile karışmasın diye üç parça arıyoruz).
-current=$(grep -oE '<control[^>]*version="[0-9]+\.[0-9]+\.[0-9]+"' "$MANIFEST" \
-          | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+# Sürüm artırımı zorunlu: sürümü değişmeyen bir kontrolün kaynaklarını Dataverse
+# güncellemiyor, içe aktarım "başarılı" der ama ekranda hiçbir şey değişmez.
+for manifest in "${MANIFESTS[@]}"; do
+    current=$(grep -oE '<control[^>]*version="[0-9]+\.[0-9]+\.[0-9]+"' "$manifest" \
+              | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
 
-if [ -z "$current" ]; then
-    echo "HATA: $MANIFEST içinde üç parçalı sürüm bulunamadı." >&2
-    exit 1
-fi
+    if [ -z "$current" ]; then
+        echo "HATA: $manifest içinde üç parçalı sürüm bulunamadı." >&2
+        exit 1
+    fi
 
-IFS='.' read -r major minor patch <<< "$current"
-next="$major.$minor.$((patch + 1))"
+    IFS='.' read -r major minor patch <<< "$current"
+    next="$major.$minor.$((patch + 1))"
 
-sed -i -E "s/version=\"$current\"/version=\"$next\"/" "$MANIFEST"
-echo "→ Manifest sürümü: $current → $next"
+    # Üç parçalı sürüm aranıyor ki XML bildirimindeki version="1.0" etkilenmesin.
+    sed -i -E "s/version=\"$current\"/version=\"$next\"/" "$manifest"
+    echo "→ $(basename "$(dirname "$manifest")"): $current → $next"
+done
 
-echo "→ Yayınlanıyor..."
-pac pcf push --publisher-prefix "$PREFIX"
+echo "→ Çözüm derleniyor (production)..."
+dotnet build "$SOLUTION_DIR" -c Release --nologo -v minimal
+
+echo "→ Ortama aktarılıyor..."
+pac solution import --path "$UNMANAGED_ZIP" --publish-changes
 
 echo
-echo "Bitti. Formda Ctrl+Shift+R ile yenile."
+echo "Bitti. Tarayıcıda Ctrl+Shift+R ile yenile."
+echo "Müşteriye teslim için: $SOLUTION_DIR/bin/Release/TedarikciKarsilastirmaSolution_managed.zip"

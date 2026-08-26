@@ -28,6 +28,7 @@ export class CalisanTalepPaneli implements ComponentFramework.ReactControl<IInpu
             entityName: dataset.getTargetEntityType(),
             webAPI: this.webAPI,
             allocatedWidth: context.mode.allocatedWidth > 0 ? context.mode.allocatedWidth : null,
+            allocatedHeight: context.mode.allocatedHeight > 0 ? context.mode.allocatedHeight : null,
             onRefresh: () => dataset.refresh(),
         };
 
