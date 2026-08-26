@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="CalisanTalepPaneli" version="1.0.0" display-name-key="Calisan Talep Paneli" description-key="Calisanin kendi taleplerini gorup yeni talep actigi panel." control-type="virtual" >
+    <!-- Veri Dataverse dataset'i ve Web API uzerinden gelir; harici servis yok. -->
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- "Taleplerim" gorunumune baglanir. Gorunumun sutun listesinde
+         TalepMetni, UrunTipi, Oncelik, Durum ve Olusturulma Tarihi bulunmalidir;
+         dataset yalnizca gorunumdeki sutunlari tasir. -->
+    <data-set name="talepler" display-name-key="Talepler">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/CalisanTalepPaneli.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+  </control>
+</manifest>

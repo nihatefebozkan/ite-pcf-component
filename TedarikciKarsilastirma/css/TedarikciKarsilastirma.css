@@ -49,10 +49,11 @@
         BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
     background-color: var(--nek-canvas);
     color: var(--nek-text);
-    height: 100%;
+    /* Kapsayıcıyı tamamen doldur — genişliği form bölümü belirler, burada
+       daraltan bir kural yok. */
+    width: 100%;
     box-sizing: border-box;
     padding: var(--nek-xl) var(--nek-xxl);
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     row-gap: var(--nek-xl);

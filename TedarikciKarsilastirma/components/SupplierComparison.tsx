@@ -81,11 +81,13 @@ export const SupplierComparison: React.FC<ISupplierComparisonProps> = (props) =>
         allocatedWidth,
     } = props;
 
-    // Form alan yüksekliği bildirmediğinde (-1) sabit bir taban yükseklik kullan.
-    const rootSizing: React.CSSProperties =
-        allocatedHeight && allocatedHeight > 0
-            ? { height: `${allocatedHeight}px` }
-            : { minHeight: "640px" };
+    // Ayrılan yükseklik üst sınır değil ALT sınır olarak kullanılıyor: içerik
+    // taşarsa bileşen uzar ve sayfa kayar. Üst sınır yapılırsa tek satırlık bir
+    // alana bağlandığında içeride ikinci bir kaydırma çubuğu oluşuyor ve form
+    // içinde form kaydırmak gerekiyor.
+    const rootSizing: React.CSSProperties = {
+        minHeight: allocatedHeight && allocatedHeight > 0 ? `${allocatedHeight}px` : "640px",
+    };
 
     const isNarrow = allocatedWidth !== null && allocatedWidth < NARROW_BREAKPOINT;
     const rootClass = cx("nek-tk", isNarrow && "nek-tk--narrow");
