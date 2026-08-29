@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# İki PCF kontrolünü birden derleyip ortama aktarır.
+# Projedeki tüm PCF kontrollerini derleyip ortama aktarır.
 #
 # `pac pcf push` kullanılmıyor çünkü iki sebeple uygun değil:
 #   1. Projede birden fazla ControlManifest.Input.xml varsa reddediyor.
 #   2. Her zaman development modunda derliyor (büyük, sıkıştırılmamış bundle).
-# Çözüm yolu iki kontrolü birden paketler ve Release'de production bundle üretir.
+# Çözüm yolu hepsini tek pakette toplar ve Release'de production bundle üretir.
+#
+# Yeni bir kontrol eklediğinde manifestini aşağıdaki MANIFESTS dizisine ekle,
+# yoksa sürümü artmaz ve Dataverse değişikliği sessizce yok sayar.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -14,6 +17,9 @@ UNMANAGED_ZIP="$SOLUTION_DIR/bin/Release/TedarikciKarsilastirmaSolution.zip"
 MANIFESTS=(
     "TedarikciKarsilastirma/ControlManifest.Input.xml"
     "CalisanTalepPaneli/ControlManifest.Input.xml"
+    "MudurOnayPaneli/ControlManifest.Input.xml"
+    "MudurKararGecmisi/ControlManifest.Input.xml"
+    "SiparisTakipPaneli/ControlManifest.Input.xml"
 )
 
 echo "→ GitHub'dan çekiliyor..."

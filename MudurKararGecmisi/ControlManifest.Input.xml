@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="MudurKararGecmisi" version="1.0.2" display-name-key="Mudur Karar Gecmisi" description-key="Mudurun verdigi onay ve ret kararlarini talep metniyle birlikte gosterir." control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- Onaylar tablosunun "Onaylayan = gecerli kullanici" filtreli gorunumune
+         baglanir. Gorunumun sutun listesinde Durum, Talep, Acklama ve
+         Degistirilme Tarihi bulunmalidir. -->
+    <data-set name="onaylar" display-name-key="Onaylar">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/MudurKararGecmisi.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+  </control>
+</manifest>

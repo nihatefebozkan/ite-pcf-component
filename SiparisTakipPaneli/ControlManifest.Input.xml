@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="SiparisTakipPaneli" version="1.0.0" display-name-key="Siparis Takip Paneli" description-key="Ucustaki siparisleri durumlariyla gosterir; agent emin olamadigi e-postalari kontrol kuyruguna dusurur." control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- Siparisler tablosunun bir gorunumune baglanir. Gorunumun sutun
+         listesinde SiparisNo, Talep, Tedarici, Tutar, KontrolGerekli,
+         AgentNotu, SonEpostaTarihi ve Olusturulma Tarihi bulunmalidir. -->
+    <data-set name="siparisler" display-name-key="Siparisler">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/SiparisTakipPaneli.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+  </control>
+</manifest>

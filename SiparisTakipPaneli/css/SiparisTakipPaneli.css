@@ -1,0 +1,419 @@
+/*
+ * Sipariş Takip Paneli — kontrol stilleri.
+ * Tüm seçiciler `stp` ön ekiyle ad alanına alınmıştır; dışına çıkmayın.
+ */
+
+.stp {
+    --stp-primary: #1e3a5f;
+    --stp-secondary: #4a90d9;
+    --stp-secondary-soft: #eaf2fb;
+
+    --stp-mavi: #2f6ba8;
+    --stp-mavi-soft: #e6eefa;
+    --stp-mor: #6b4fa8;
+    --stp-mor-soft: #efe9fa;
+    --stp-amber: #d98e04;
+    --stp-amber-soft: #fdf3e0;
+    --stp-yesil: #2e7d5b;
+    --stp-yesil-soft: #e8f4ee;
+    --stp-red: #c0392b;
+    --stp-red-soft: #fbebe9;
+    --stp-gri: #5b6b7f;
+    --stp-gri-soft: #eef1f5;
+
+    --stp-surface: #ffffff;
+    --stp-canvas: #f4f6f9;
+    --stp-sunken: #f7f9fc;
+    --stp-border: #e4eaf1;
+    --stp-border-strong: #c9d4e1;
+
+    --stp-text: #1b2733;
+    --stp-text-muted: #5b6b7f;
+    --stp-text-faint: #8a97a8;
+
+    --stp-sm: 8px;
+    --stp-md: 12px;
+    --stp-lg: 16px;
+    --stp-xl: 20px;
+    --stp-xxl: 28px;
+
+    --stp-radius-md: 8px;
+    --stp-radius-lg: 12px;
+    --stp-radius-pill: 999px;
+
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+        BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--stp-canvas);
+    color: var(--stp-text);
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--stp-xl) var(--stp-xxl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--stp-lg);
+    overflow-y: auto;
+}
+
+.stp *,
+.stp *::before,
+.stp *::after {
+    box-sizing: border-box;
+}
+
+.stp--dar {
+    padding: var(--stp-lg) var(--stp-md);
+}
+
+/* ---------- Başlık ---------- */
+
+.stp__bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--stp-lg);
+    row-gap: var(--stp-md);
+    flex-wrap: wrap;
+}
+
+.stp__baslik {
+    margin: 0;
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 600;
+    color: var(--stp-primary);
+}
+
+.stp__ozet {
+    margin: 3px 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--stp-text-muted);
+}
+
+.stp__ozet strong {
+    color: var(--stp-primary);
+}
+
+.stp__ozet .stp__uyari {
+    color: var(--stp-red);
+}
+
+.stp-btn-ikon {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: var(--stp-radius-md);
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--stp-primary);
+    cursor: pointer;
+}
+
+.stp-btn-ikon:hover {
+    background-color: var(--stp-secondary-soft);
+}
+
+.stp-btn-ikon:focus-visible {
+    outline: 2px solid var(--stp-secondary);
+    outline-offset: 2px;
+}
+
+/* ---------- Süzgeç çipleri ---------- */
+
+.stp-suzgecler {
+    display: flex;
+    gap: var(--stp-sm);
+    flex-wrap: wrap;
+}
+
+.stp-cip {
+    font-family: inherit;
+    font-size: 12.5px;
+    line-height: 18px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--stp-radius-pill);
+    border: 1px solid var(--stp-border-strong);
+    background-color: var(--stp-surface);
+    color: var(--stp-text-muted);
+    cursor: pointer;
+    transition: background-color 120ms, border-color 120ms, color 120ms;
+}
+
+.stp-cip:hover {
+    border-color: var(--stp-secondary);
+}
+
+.stp-cip:focus-visible {
+    outline: 2px solid var(--stp-secondary);
+    outline-offset: 2px;
+}
+
+.stp-cip--secili {
+    background-color: var(--stp-primary);
+    border-color: var(--stp-primary);
+    color: #ffffff;
+}
+
+.stp-cip--uyari.stp-cip--secili {
+    background-color: var(--stp-red);
+    border-color: var(--stp-red);
+}
+
+/* ---------- Kartlar ---------- */
+
+.stp-liste {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--stp-md);
+}
+
+.stp-kart {
+    background-color: var(--stp-surface);
+    border: 1px solid var(--stp-border);
+    border-radius: var(--stp-radius-lg);
+    padding: var(--stp-lg) var(--stp-xl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--stp-md);
+}
+
+/* Kontrol bekleyen siparişler gözden kaçmasın. */
+.stp-kart--kontrol {
+    border-color: var(--stp-red);
+    background-color: var(--stp-red-soft);
+}
+
+.stp-kart__ust {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--stp-md);
+    row-gap: var(--stp-sm);
+    flex-wrap: wrap;
+}
+
+.stp-kart__baslik-blok {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    min-width: 0;
+    flex: 1 1 260px;
+}
+
+.stp-kart__no {
+    font-size: 11.5px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--stp-text-faint);
+    font-variant-numeric: tabular-nums;
+}
+
+.stp-kart__ozet {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 21px;
+    font-weight: 600;
+    color: var(--stp-primary);
+    overflow-wrap: anywhere;
+}
+
+.stp-kart__alt {
+    display: flex;
+    align-items: center;
+    gap: var(--stp-sm);
+    flex-wrap: wrap;
+}
+
+.stp-kart__tedarikci {
+    font-size: 12.5px;
+    line-height: 17px;
+    font-weight: 600;
+    color: var(--stp-text-muted);
+}
+
+.stp-kart__tutar {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--stp-primary);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.stp-kart__tarih {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--stp-text-faint);
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.stp--dar .stp-kart__tarih {
+    margin-left: 0;
+}
+
+.stp-rozet {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: var(--stp-radius-pill);
+    white-space: nowrap;
+}
+
+.stp-tone--mavi {
+    background-color: var(--stp-mavi-soft);
+    color: var(--stp-mavi);
+}
+
+.stp-tone--mor {
+    background-color: var(--stp-mor-soft);
+    color: var(--stp-mor);
+}
+
+.stp-tone--amber {
+    background-color: var(--stp-amber-soft);
+    color: var(--stp-amber);
+}
+
+.stp-tone--yesil {
+    background-color: var(--stp-yesil-soft);
+    color: var(--stp-yesil);
+}
+
+.stp-tone--red {
+    background-color: var(--stp-red-soft);
+    color: var(--stp-red);
+}
+
+.stp-tone--gri {
+    background-color: var(--stp-gri-soft);
+    color: var(--stp-gri);
+}
+
+/* ---------- Agent notu ---------- */
+
+.stp-agent {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+    background-color: var(--stp-surface);
+    border: 1px solid var(--stp-red);
+    border-radius: var(--stp-radius-md);
+    padding: var(--stp-md) var(--stp-lg);
+}
+
+.stp-agent__baslik {
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--stp-red);
+}
+
+.stp-agent__metin {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--stp-text);
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+/* ---------- Bildirim, boş, yükleniyor ---------- */
+
+.stp-bildirim {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    padding: var(--stp-md) var(--stp-lg);
+    border-radius: var(--stp-radius-md);
+    border: 1px solid transparent;
+}
+
+.stp-bildirim--uyari {
+    color: var(--stp-amber);
+    background-color: var(--stp-amber-soft);
+    border-color: var(--stp-amber);
+}
+
+.stp-bildirim--hata {
+    color: var(--stp-red);
+    background-color: var(--stp-red-soft);
+    border-color: var(--stp-red);
+}
+
+.stp-bos {
+    margin: 0;
+    background-color: var(--stp-surface);
+    border: 1px dashed var(--stp-border-strong);
+    border-radius: var(--stp-radius-lg);
+    padding: var(--stp-xxl) var(--stp-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: var(--stp-sm);
+}
+
+.stp-bos__baslik {
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 600;
+    color: var(--stp-primary);
+}
+
+.stp-bos__metin {
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--stp-text-muted);
+    max-width: 420px;
+}
+
+.stp-merkez {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: var(--stp-md);
+    padding: 56px 16px;
+    text-align: center;
+}
+
+.stp-merkez__metin {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--stp-text-muted);
+}
+
+.stp-spinner {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--stp-radius-pill);
+    border: 3px solid var(--stp-border);
+    border-top-color: var(--stp-secondary);
+    animation: stp-spin 800ms linear infinite;
+}
+
+@keyframes stp-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stp-spinner {
+        animation: stp-nabiz 1200ms ease-in-out infinite;
+    }
+
+    @keyframes stp-nabiz {
+        50% {
+            opacity: 0.4;
+        }
+    }
+}
