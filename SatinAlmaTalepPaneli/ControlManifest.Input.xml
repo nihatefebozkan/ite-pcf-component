@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="SatinAlmaTalepPaneli" version="1.0.0" display-name-key="Satin Alma Talep Paneli" description-key="Tedarikci secimi bekleyen talepleri listeler; piyasa arastirmasi olmayanlari isaretler." control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- "Siparis Bekleyen Talepler" gorunumune baglanir. Gorunumun sutun
+         listesinde TalepMetni, UrunTipi, Oncelik, Calisan ve Olusturulma
+         Tarihi bulunmalidir. -->
+    <data-set name="talepler" display-name-key="Talepler">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/SatinAlmaTalepPaneli.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+  </control>
+</manifest>

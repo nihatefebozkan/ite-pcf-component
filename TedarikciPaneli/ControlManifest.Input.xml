@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="TedarikciPaneli" version="1.0.1" display-name-key="Tedarikci Paneli" description-key="Tedarikci havuzunu performans gostergeleriyle listeler; siparis e-postasi gonderilemeyecek tedarikcileri isaretler." control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- Tedarikciler tablosunun bir gorunumune baglanir. Gorunumun sutun
+         listesinde Ad, UrunKategorisi, Email, AnlasmaliTedarikci, Fiyat,
+         TeslimSuresi, GecTeslimatOrani, GarantiSuresi, SurdurebilirlikPuani
+         ve GecmisSiparisSayisi bulunmalidir. -->
+    <data-set name="tedarikciler" display-name-key="Tedarikciler">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/TedarikciPaneli.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+  </control>
+</manifest>

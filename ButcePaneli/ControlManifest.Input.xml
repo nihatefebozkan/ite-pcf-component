@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="ButcePaneli" version="1.0.1" display-name-key="Butce Paneli" description-key="Donemlik sirket butcesini tuketim cubuklariyla gosterir." control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- SirketButce tablosunun bir gorunumune baglanir. Gorunumun sutun
+         listesinde Donem, ToplamButce ve KullanilanTutar bulunmalidir. -->
+    <data-set name="butceler" display-name-key="Butceler">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/ButcePaneli.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+  </control>
+</manifest>

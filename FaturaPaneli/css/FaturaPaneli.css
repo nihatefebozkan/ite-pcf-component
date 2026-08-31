@@ -1,0 +1,464 @@
+/*
+ * Fatura Paneli — kontrol stilleri.
+ * Tüm seçiciler `fap` ön ekiyle ad alanına alınmıştır; dışına çıkmayın.
+ */
+
+.fap {
+    --fap-primary: #1e3a5f;
+    --fap-secondary: #4a90d9;
+    --fap-secondary-soft: #eaf2fb;
+
+    --fap-mavi: #2f6ba8;
+    --fap-mavi-soft: #e6eefa;
+    --fap-yesil: #2e7d5b;
+    --fap-yesil-soft: #e8f4ee;
+    --fap-amber: #d98e04;
+    --fap-amber-soft: #fdf3e0;
+    --fap-red: #c0392b;
+    --fap-red-soft: #fbebe9;
+    --fap-gri: #5b6b7f;
+    --fap-gri-soft: #eef1f5;
+
+    --fap-surface: #ffffff;
+    --fap-canvas: #f4f6f9;
+    --fap-sunken: #f7f9fc;
+    --fap-border: #e4eaf1;
+    --fap-border-strong: #c9d4e1;
+
+    --fap-text: #1b2733;
+    --fap-text-muted: #5b6b7f;
+    --fap-text-faint: #8a97a8;
+
+    --fap-sm: 8px;
+    --fap-md: 12px;
+    --fap-lg: 16px;
+    --fap-xl: 20px;
+    --fap-xxl: 28px;
+
+    --fap-radius-md: 8px;
+    --fap-radius-lg: 12px;
+    --fap-radius-pill: 999px;
+
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+        BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--fap-canvas);
+    color: var(--fap-text);
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--fap-xl) var(--fap-xxl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--fap-lg);
+    overflow-y: auto;
+}
+
+.fap *,
+.fap *::before,
+.fap *::after {
+    box-sizing: border-box;
+}
+
+.fap--dar {
+    padding: var(--fap-lg) var(--fap-md);
+}
+
+/* ---------- Başlık ve özet ---------- */
+
+.fap__bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--fap-lg);
+    row-gap: var(--fap-md);
+    flex-wrap: wrap;
+}
+
+.fap__baslik {
+    margin: 0;
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 600;
+    color: var(--fap-primary);
+}
+
+.fap-btn-ikon {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: var(--fap-radius-md);
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--fap-primary);
+    cursor: pointer;
+}
+
+.fap-btn-ikon:hover {
+    background-color: var(--fap-secondary-soft);
+}
+
+.fap-btn-ikon:focus-visible {
+    outline: 2px solid var(--fap-secondary);
+    outline-offset: 2px;
+}
+
+.fap-ozet {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--fap-md) var(--fap-xl);
+    background-color: var(--fap-surface);
+    border: 1px solid var(--fap-border);
+    border-radius: var(--fap-radius-lg);
+    padding: var(--fap-lg) var(--fap-xl);
+}
+
+.fap-ozet__oge {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+    min-width: 0;
+}
+
+.fap-ozet__etiket {
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--fap-text-faint);
+}
+
+.fap-ozet__deger {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 700;
+    color: var(--fap-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.fap-ozet__deger--uyari {
+    color: var(--fap-red);
+}
+
+/* ---------- Süzgeçler ---------- */
+
+.fap-suzgecler {
+    display: flex;
+    gap: var(--fap-sm);
+    flex-wrap: wrap;
+}
+
+.fap-cip {
+    font-family: inherit;
+    font-size: 12.5px;
+    line-height: 18px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--fap-radius-pill);
+    border: 1px solid var(--fap-border-strong);
+    background-color: var(--fap-surface);
+    color: var(--fap-text-muted);
+    cursor: pointer;
+    transition: background-color 120ms, border-color 120ms, color 120ms;
+}
+
+.fap-cip:hover {
+    border-color: var(--fap-secondary);
+}
+
+.fap-cip:focus-visible {
+    outline: 2px solid var(--fap-secondary);
+    outline-offset: 2px;
+}
+
+.fap-cip--secili {
+    background-color: var(--fap-primary);
+    border-color: var(--fap-primary);
+    color: #ffffff;
+}
+
+.fap-cip--uyari.fap-cip--secili {
+    background-color: var(--fap-red);
+    border-color: var(--fap-red);
+}
+
+/* ---------- Kartlar ---------- */
+
+.fap-liste {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--fap-md);
+}
+
+.fap-kart {
+    background-color: var(--fap-surface);
+    border: 1px solid var(--fap-border);
+    border-radius: var(--fap-radius-lg);
+    padding: var(--fap-lg) var(--fap-xl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--fap-md);
+}
+
+/* Tutarı tutmayan fatura ödenmeden önce görülmeli. */
+.fap-kart--uyusmuyor {
+    border-color: var(--fap-red);
+}
+
+.fap-kart__ust {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--fap-md);
+    row-gap: var(--fap-sm);
+    flex-wrap: wrap;
+}
+
+.fap-kart__baslik-blok {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    min-width: 0;
+    flex: 1 1 220px;
+}
+
+.fap-kart__no {
+    margin: 0;
+    font-size: 15px;
+    line-height: 21px;
+    font-weight: 600;
+    color: var(--fap-primary);
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+}
+
+.fap-kart__siparis {
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--fap-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.fap-kart__tutar {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 700;
+    color: var(--fap-primary);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.fap-kart__alt {
+    display: flex;
+    align-items: center;
+    gap: var(--fap-sm);
+    flex-wrap: wrap;
+}
+
+.fap-kart__tarih {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fap-text-faint);
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.fap--dar .fap-kart__tarih {
+    margin-left: 0;
+}
+
+/* ---------- Eşleştirme bloğu ---------- */
+
+.fap-eslesme {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+    border-radius: var(--fap-radius-md);
+    padding: var(--fap-md) var(--fap-lg);
+    background-color: var(--fap-sunken);
+}
+
+.fap-eslesme--uyusmuyor {
+    background-color: var(--fap-red-soft);
+    border: 1px solid var(--fap-red);
+}
+
+.fap-eslesme__baslik {
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--fap-text-faint);
+}
+
+.fap-eslesme--uyusmuyor .fap-eslesme__baslik {
+    color: var(--fap-red);
+}
+
+.fap-eslesme__metin {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--fap-text);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- KDV kırılımı ---------- */
+
+.fap-kdv {
+    display: flex;
+    gap: var(--fap-lg);
+    flex-wrap: wrap;
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--fap-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.fap-kdv strong {
+    color: var(--fap-text);
+}
+
+/* ---------- Rozet ve bağlantı ---------- */
+
+.fap-rozet {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: var(--fap-radius-pill);
+    white-space: nowrap;
+}
+
+.fap-tone--mavi {
+    background-color: var(--fap-mavi-soft);
+    color: var(--fap-mavi);
+}
+
+.fap-tone--yesil {
+    background-color: var(--fap-yesil-soft);
+    color: var(--fap-yesil);
+}
+
+.fap-tone--amber {
+    background-color: var(--fap-amber-soft);
+    color: var(--fap-amber);
+}
+
+.fap-tone--red {
+    background-color: var(--fap-red-soft);
+    color: var(--fap-red);
+}
+
+.fap-tone--gri {
+    background-color: var(--fap-gri-soft);
+    color: var(--fap-gri);
+}
+
+.fap-pdf {
+    font-size: 12.5px;
+    line-height: 18px;
+    font-weight: 600;
+    color: var(--fap-secondary);
+    text-decoration: none;
+}
+
+.fap-pdf:hover,
+.fap-pdf:focus-visible {
+    text-decoration: underline;
+}
+
+/* ---------- Bildirim, boş, yükleniyor ---------- */
+
+.fap-bildirim {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    padding: var(--fap-md) var(--fap-lg);
+    border-radius: var(--fap-radius-md);
+    border: 1px solid transparent;
+}
+
+.fap-bildirim--uyari {
+    color: var(--fap-amber);
+    background-color: var(--fap-amber-soft);
+    border-color: var(--fap-amber);
+}
+
+.fap-bildirim--hata {
+    color: var(--fap-red);
+    background-color: var(--fap-red-soft);
+    border-color: var(--fap-red);
+}
+
+.fap-bos {
+    margin: 0;
+    background-color: var(--fap-surface);
+    border: 1px dashed var(--fap-border-strong);
+    border-radius: var(--fap-radius-lg);
+    padding: var(--fap-xxl) var(--fap-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: var(--fap-sm);
+}
+
+.fap-bos__baslik {
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 600;
+    color: var(--fap-primary);
+}
+
+.fap-bos__metin {
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--fap-text-muted);
+    max-width: 420px;
+}
+
+.fap-merkez {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: var(--fap-md);
+    padding: 56px 16px;
+    text-align: center;
+}
+
+.fap-merkez__metin {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--fap-text-muted);
+}
+
+.fap-spinner {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--fap-radius-pill);
+    border: 3px solid var(--fap-border);
+    border-top-color: var(--fap-secondary);
+    animation: fap-spin 800ms linear infinite;
+}
+
+@keyframes fap-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fap-spinner {
+        animation: fap-nabiz 1200ms ease-in-out infinite;
+    }
+
+    @keyframes fap-nabiz {
+        50% {
+            opacity: 0.4;
+        }
+    }
+}

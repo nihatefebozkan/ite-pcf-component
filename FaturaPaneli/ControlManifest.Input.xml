@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="FaturaPaneli" version="1.0.0" display-name-key="Fatura Paneli" description-key="Faturalari siparis tutariyla karsilastirir; uyusmayanlari isaretler." control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- Faturalar tablosunun bir gorunumune baglanir. Gorunumun sutun
+         listesinde FaturaNo, FaturaDurumu, Tutar, KdvOrani, Siparis ve
+         PDF Dosya bulunmalidir. -->
+    <data-set name="faturalar" display-name-key="Faturalar">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/FaturaPaneli.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+  </control>
+</manifest>

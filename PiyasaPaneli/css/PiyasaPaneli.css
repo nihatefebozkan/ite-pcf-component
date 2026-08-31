@@ -1,0 +1,366 @@
+/*
+ * Piyasa Araştırma Paneli — kontrol stilleri.
+ * Tüm seçiciler `pap` ön ekiyle ad alanına alınmıştır; dışına çıkmayın.
+ */
+
+.pap {
+    --pap-primary: #1e3a5f;
+    --pap-secondary: #4a90d9;
+    --pap-secondary-soft: #eaf2fb;
+
+    --pap-yesil: #2e7d5b;
+    --pap-yesil-soft: #e8f4ee;
+    --pap-amber: #d98e04;
+    --pap-amber-soft: #fdf3e0;
+    --pap-red: #c0392b;
+    --pap-red-soft: #fbebe9;
+    --pap-gri: #5b6b7f;
+    --pap-gri-soft: #eef1f5;
+
+    --pap-surface: #ffffff;
+    --pap-canvas: #f4f6f9;
+    --pap-sunken: #f7f9fc;
+    --pap-border: #e4eaf1;
+    --pap-border-strong: #c9d4e1;
+
+    --pap-text: #1b2733;
+    --pap-text-muted: #5b6b7f;
+    --pap-text-faint: #8a97a8;
+
+    --pap-sm: 8px;
+    --pap-md: 12px;
+    --pap-lg: 16px;
+    --pap-xl: 20px;
+    --pap-xxl: 28px;
+
+    --pap-radius-md: 8px;
+    --pap-radius-lg: 12px;
+    --pap-radius-pill: 999px;
+
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+        BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--pap-canvas);
+    color: var(--pap-text);
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--pap-xl) var(--pap-xxl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--pap-lg);
+    overflow-y: auto;
+}
+
+.pap *,
+.pap *::before,
+.pap *::after {
+    box-sizing: border-box;
+}
+
+.pap--dar {
+    padding: var(--pap-lg) var(--pap-md);
+}
+
+/* ---------- Başlık ---------- */
+
+.pap__bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--pap-lg);
+    row-gap: var(--pap-md);
+    flex-wrap: wrap;
+}
+
+.pap__baslik {
+    margin: 0;
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 600;
+    color: var(--pap-primary);
+}
+
+.pap__ozet {
+    margin: 3px 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--pap-text-muted);
+}
+
+.pap__ozet strong {
+    color: var(--pap-primary);
+}
+
+.pap-btn-ikon {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: var(--pap-radius-md);
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--pap-primary);
+    cursor: pointer;
+}
+
+.pap-btn-ikon:hover {
+    background-color: var(--pap-secondary-soft);
+}
+
+.pap-btn-ikon:focus-visible {
+    outline: 2px solid var(--pap-secondary);
+    outline-offset: 2px;
+}
+
+/* ---------- Gruplar ---------- */
+
+.pap-gruplar {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--pap-lg);
+}
+
+.pap-grup {
+    background-color: var(--pap-surface);
+    border: 1px solid var(--pap-border);
+    border-radius: var(--pap-radius-lg);
+    overflow: hidden;
+}
+
+.pap-grup--bagsiz {
+    border-color: var(--pap-amber);
+}
+
+.pap-grup__baslik {
+    padding: var(--pap-md) var(--pap-xl);
+    background-color: var(--pap-sunken);
+    border-bottom: 1px solid var(--pap-border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    column-gap: var(--pap-md);
+    row-gap: var(--pap-sm);
+    flex-wrap: wrap;
+}
+
+.pap-grup__talep {
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--pap-primary);
+    overflow-wrap: anywhere;
+    flex: 1 1 240px;
+    min-width: 0;
+}
+
+.pap-grup__sag {
+    display: flex;
+    align-items: center;
+    gap: var(--pap-sm);
+    flex-wrap: wrap;
+}
+
+.pap-grup__sayi {
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--pap-text-faint);
+    white-space: nowrap;
+}
+
+/* ---------- Bulgu satırları ---------- */
+
+.pap-satir {
+    padding: var(--pap-md) var(--pap-xl);
+    display: flex;
+    flex-direction: column;
+    row-gap: 6px;
+}
+
+.pap-satir + .pap-satir {
+    border-top: 1px solid var(--pap-border);
+}
+
+/* Grubun en ucuzu — karşılaştırmada ilk bakılan satır. */
+.pap-satir--ucuz {
+    background-color: var(--pap-yesil-soft);
+}
+
+.pap-satir__ust {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    column-gap: var(--pap-sm);
+}
+
+.pap-satir__kaynak {
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    color: var(--pap-secondary);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.pap-satir__kaynak:hover,
+.pap-satir__kaynak:focus-visible {
+    text-decoration: underline;
+}
+
+.pap-satir__kaynak--duz {
+    color: var(--pap-text-muted);
+}
+
+.pap-satir__fiyat {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--pap-primary);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.pap-satir__urun,
+.pap-satir__not {
+    margin: 0;
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--pap-text-muted);
+    overflow-wrap: anywhere;
+}
+
+.pap-satir__not {
+    padding-left: var(--pap-md);
+    position: relative;
+}
+
+.pap-satir__not-isaret {
+    position: absolute;
+    left: 0;
+    color: var(--pap-text-faint);
+}
+
+.pap-rozet {
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: var(--pap-radius-pill);
+    white-space: nowrap;
+    align-self: flex-start;
+}
+
+.pap-tone--yesil {
+    background-color: var(--pap-yesil-soft);
+    color: var(--pap-yesil);
+}
+
+.pap-tone--gri {
+    background-color: var(--pap-gri-soft);
+    color: var(--pap-gri);
+}
+
+.pap-tone--amber {
+    background-color: var(--pap-amber-soft);
+    color: var(--pap-amber);
+}
+
+/* En ucuz satırda rozet zemini zaten yeşil; ayrışsın diye beyaz. */
+.pap-satir--ucuz .pap-rozet {
+    background-color: var(--pap-surface);
+}
+
+/* ---------- Bildirim, boş, yükleniyor ---------- */
+
+.pap-bildirim {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    padding: var(--pap-md) var(--pap-lg);
+    border-radius: var(--pap-radius-md);
+    border: 1px solid transparent;
+}
+
+.pap-bildirim--uyari {
+    color: var(--pap-amber);
+    background-color: var(--pap-amber-soft);
+    border-color: var(--pap-amber);
+}
+
+.pap-bildirim--hata {
+    color: var(--pap-red);
+    background-color: var(--pap-red-soft);
+    border-color: var(--pap-red);
+}
+
+.pap-bos {
+    margin: 0;
+    background-color: var(--pap-surface);
+    border: 1px dashed var(--pap-border-strong);
+    border-radius: var(--pap-radius-lg);
+    padding: var(--pap-xxl) var(--pap-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: var(--pap-sm);
+}
+
+.pap-bos__baslik {
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 600;
+    color: var(--pap-primary);
+}
+
+.pap-bos__metin {
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--pap-text-muted);
+    max-width: 420px;
+}
+
+.pap-merkez {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: var(--pap-md);
+    padding: 56px 16px;
+    text-align: center;
+}
+
+.pap-merkez__metin {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--pap-text-muted);
+}
+
+.pap-spinner {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--pap-radius-pill);
+    border: 3px solid var(--pap-border);
+    border-top-color: var(--pap-secondary);
+    animation: pap-spin 800ms linear infinite;
+}
+
+@keyframes pap-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pap-spinner {
+        animation: pap-nabiz 1200ms ease-in-out infinite;
+    }
+
+    @keyframes pap-nabiz {
+        50% {
+            opacity: 0.4;
+        }
+    }
+}

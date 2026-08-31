@@ -20,6 +20,11 @@ MANIFESTS=(
     "MudurOnayPaneli/ControlManifest.Input.xml"
     "MudurKararGecmisi/ControlManifest.Input.xml"
     "SiparisTakipPaneli/ControlManifest.Input.xml"
+    "TedarikciPaneli/ControlManifest.Input.xml"
+    "ButcePaneli/ControlManifest.Input.xml"
+    "SatinAlmaTalepPaneli/ControlManifest.Input.xml"
+    "PiyasaPaneli/ControlManifest.Input.xml"
+    "FaturaPaneli/ControlManifest.Input.xml"
 )
 
 echo "→ GitHub'dan çekiliyor..."

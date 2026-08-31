@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITE" constructor="PiyasaPaneli" version="1.0.0" display-name-key="Piyasa Arastirma Paneli" description-key="AI'in bulduğu piyasa fiyatlarini talebe gore gruplar; her grupta en ucuzu vurgular." control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- PiyasaArastirmasi tablosunun bir gorunumune baglanir. Gorunumun sutun
+         listesinde Talep, KaynakSite, UrunAdi, BulunanFiyat, UrunLinki ve
+         KarsilastirmaNotu bulunmalidir. -->
+    <data-set name="arastirmalar" display-name-key="Arastirmalar">
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/PiyasaPaneli.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+  </control>
+</manifest>

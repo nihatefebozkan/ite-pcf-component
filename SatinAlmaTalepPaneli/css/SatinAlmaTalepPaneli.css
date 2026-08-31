@@ -1,0 +1,375 @@
+/*
+ * Satın Alma Talep Paneli — kontrol stilleri.
+ * Tüm seçiciler `sap` ön ekiyle ad alanına alınmıştır; dışına çıkmayın.
+ */
+
+.sap {
+    --sap-primary: #1e3a5f;
+    --sap-secondary: #4a90d9;
+    --sap-secondary-soft: #eaf2fb;
+
+    --sap-amber: #d98e04;
+    --sap-amber-soft: #fdf3e0;
+    --sap-red: #c0392b;
+    --sap-red-soft: #fbebe9;
+    --sap-gri: #5b6b7f;
+    --sap-gri-soft: #eef1f5;
+
+    --sap-surface: #ffffff;
+    --sap-canvas: #f4f6f9;
+    --sap-border: #e4eaf1;
+    --sap-border-strong: #c9d4e1;
+
+    --sap-text: #1b2733;
+    --sap-text-muted: #5b6b7f;
+    --sap-text-faint: #8a97a8;
+
+    --sap-sm: 8px;
+    --sap-md: 12px;
+    --sap-lg: 16px;
+    --sap-xl: 20px;
+    --sap-xxl: 28px;
+
+    --sap-radius-md: 8px;
+    --sap-radius-lg: 12px;
+    --sap-radius-pill: 999px;
+
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+        BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--sap-canvas);
+    color: var(--sap-text);
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--sap-xl) var(--sap-xxl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--sap-lg);
+    overflow-y: auto;
+}
+
+.sap *,
+.sap *::before,
+.sap *::after {
+    box-sizing: border-box;
+}
+
+.sap--dar {
+    padding: var(--sap-lg) var(--sap-md);
+}
+
+/* ---------- Başlık ---------- */
+
+.sap__bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--sap-lg);
+    row-gap: var(--sap-md);
+    flex-wrap: wrap;
+}
+
+.sap__baslik {
+    margin: 0;
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 600;
+    color: var(--sap-primary);
+}
+
+.sap__ozet {
+    margin: 3px 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--sap-text-muted);
+}
+
+.sap__ozet strong {
+    color: var(--sap-primary);
+}
+
+.sap-btn-ikon {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: var(--sap-radius-md);
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--sap-primary);
+    cursor: pointer;
+}
+
+.sap-btn-ikon:hover {
+    background-color: var(--sap-secondary-soft);
+}
+
+.sap-btn-ikon:focus-visible {
+    outline: 2px solid var(--sap-secondary);
+    outline-offset: 2px;
+}
+
+/* ---------- Süzgeçler ---------- */
+
+.sap-suzgecler {
+    display: flex;
+    gap: var(--sap-sm);
+    flex-wrap: wrap;
+}
+
+.sap-cip {
+    font-family: inherit;
+    font-size: 12.5px;
+    line-height: 18px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--sap-radius-pill);
+    border: 1px solid var(--sap-border-strong);
+    background-color: var(--sap-surface);
+    color: var(--sap-text-muted);
+    cursor: pointer;
+    transition: background-color 120ms, border-color 120ms, color 120ms;
+}
+
+.sap-cip:hover {
+    border-color: var(--sap-secondary);
+}
+
+.sap-cip:focus-visible {
+    outline: 2px solid var(--sap-secondary);
+    outline-offset: 2px;
+}
+
+.sap-cip--secili {
+    background-color: var(--sap-primary);
+    border-color: var(--sap-primary);
+    color: #ffffff;
+}
+
+.sap-cip--uyari.sap-cip--secili {
+    background-color: var(--sap-amber);
+    border-color: var(--sap-amber);
+}
+
+/* ---------- Kartlar ---------- */
+
+.sap-liste {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--sap-md);
+}
+
+.sap-kart {
+    background-color: var(--sap-surface);
+    border: 1px solid var(--sap-border);
+    border-radius: var(--sap-radius-lg);
+    padding: var(--sap-lg) var(--sap-xl);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--sap-md);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+    transition: border-color 150ms, box-shadow 150ms;
+}
+
+.sap-kart:hover {
+    border-color: var(--sap-secondary);
+    box-shadow: 0 2px 10px rgba(74, 144, 217, 0.12);
+}
+
+.sap-kart:focus-visible {
+    outline: 2px solid var(--sap-secondary);
+    outline-offset: 2px;
+}
+
+/* Araştırması olmayan talep açılınca yarım ekranla karşılaşılıyor. */
+.sap-kart--arastirmasiz {
+    border-left-width: 3px;
+    border-left-style: solid;
+    border-left-color: var(--sap-amber);
+}
+
+.sap-kart__ust {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: var(--sap-md);
+    row-gap: var(--sap-sm);
+    flex-wrap: wrap;
+}
+
+.sap-kart__ozet {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 21px;
+    font-weight: 600;
+    color: var(--sap-primary);
+    overflow-wrap: anywhere;
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.sap-kart__alt {
+    display: flex;
+    align-items: center;
+    gap: var(--sap-sm);
+    flex-wrap: wrap;
+}
+
+.sap-kart__calisan {
+    font-size: 12.5px;
+    line-height: 17px;
+    font-weight: 600;
+    color: var(--sap-text-muted);
+}
+
+.sap-kart__tarih {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--sap-text-faint);
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.sap--dar .sap-kart__tarih {
+    margin-left: 0;
+}
+
+.sap-uyari {
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--sap-amber);
+    background-color: var(--sap-amber-soft);
+    border-radius: var(--sap-radius-md);
+    padding: var(--sap-sm) var(--sap-md);
+}
+
+.sap-rozet {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: var(--sap-radius-pill);
+    white-space: nowrap;
+}
+
+.sap-etiket {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+    padding: 2px 9px;
+    border-radius: var(--sap-radius-pill);
+    background-color: var(--sap-gri-soft);
+    color: var(--sap-text-muted);
+    white-space: nowrap;
+}
+
+.sap-tone--red {
+    background-color: var(--sap-red-soft);
+    color: var(--sap-red);
+}
+
+.sap-tone--amber {
+    background-color: var(--sap-amber-soft);
+    color: var(--sap-amber);
+}
+
+.sap-tone--gri {
+    background-color: var(--sap-gri-soft);
+    color: var(--sap-gri);
+}
+
+/* ---------- Bildirim, boş, yükleniyor ---------- */
+
+.sap-bildirim {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    padding: var(--sap-md) var(--sap-lg);
+    border-radius: var(--sap-radius-md);
+    border: 1px solid transparent;
+}
+
+.sap-bildirim--uyari {
+    color: var(--sap-amber);
+    background-color: var(--sap-amber-soft);
+    border-color: var(--sap-amber);
+}
+
+.sap-bildirim--hata {
+    color: var(--sap-red);
+    background-color: var(--sap-red-soft);
+    border-color: var(--sap-red);
+}
+
+.sap-bos {
+    margin: 0;
+    background-color: var(--sap-surface);
+    border: 1px dashed var(--sap-border-strong);
+    border-radius: var(--sap-radius-lg);
+    padding: var(--sap-xxl) var(--sap-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: var(--sap-sm);
+}
+
+.sap-bos__baslik {
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 600;
+    color: var(--sap-primary);
+}
+
+.sap-bos__metin {
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--sap-text-muted);
+    max-width: 420px;
+}
+
+.sap-merkez {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: var(--sap-md);
+    padding: 56px 16px;
+    text-align: center;
+}
+
+.sap-merkez__metin {
+    margin: 0;
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--sap-text-muted);
+}
+
+.sap-spinner {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--sap-radius-pill);
+    border: 3px solid var(--sap-border);
+    border-top-color: var(--sap-secondary);
+    animation: sap-spin 800ms linear infinite;
+}
+
+@keyframes sap-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sap-spinner {
+        animation: sap-nabiz 1200ms ease-in-out infinite;
+    }
+
+    @keyframes sap-nabiz {
+        50% {
+            opacity: 0.4;
+        }
+    }
+}
