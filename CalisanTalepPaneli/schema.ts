@@ -53,4 +53,7 @@ export const DurumDegerleri = {
     siparisVerildi: 479490005,
     kargoda: 479490006,
     teslimEdildi: 479490007,
+    /** Muhasebe faturayı işledi. Çalışan için teslimattan sonrası; zaman
+     *  çizelgesinde ayrı adım açılmıyor, son adıma sayılıyor. */
+    faturalandi: 479490008,
 } as const;

@@ -4,15 +4,25 @@ export interface ButceDonemi {
     /** "2026-Q3" gibi serbest metin. */
     donem: string | null;
     toplam: number | null;
+    /** Kesinleşmiş harcama. */
     kullanilan: number | null;
+    /** Onaylanmış ama henüz faturalanmamış taahhüt. */
+    bloke: number | null;
 }
 
 /** Hesaplanmış tüketim bilgisi. */
 export interface Tuketim {
-    /** Kalan tutar; toplam bilinmiyorsa null. Aşımda negatif olur. */
+    /**
+     * Gerçekten harcanabilir tutar: toplam − kullanılan − bloke.
+     * Blokeyi düşmezsek aynı parayı iki kez taahhüt etmiş oluruz.
+     */
     kalan: number | null;
-    /** Tüketim yüzdesi (0-100+); hesaplanamıyorsa null. */
-    yuzde: number | null;
-    /** Kullanılan tutar toplamı aştı mı. */
+    /** Kesinleşmiş harcamanın yüzdesi. */
+    kullanilanYuzde: number | null;
+    /** Rezerve edilmiş tutarın yüzdesi. */
+    blokeYuzde: number | null;
+    /** Kullanılan + bloke; bandın rengini bu belirler. */
+    toplamYuzde: number | null;
+    /** Taahhütler toplam bütçeyi aştı mı. */
     asim: boolean;
 }

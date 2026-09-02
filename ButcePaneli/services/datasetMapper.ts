@@ -40,6 +40,7 @@ export function butceleriEsle(dataset: DataSet): ButceDonemi[] {
             donem: metin(record, ButceColumns.donem, mevcut),
             toplam: sayi(record, ButceColumns.toplamButce, mevcut),
             kullanilan: sayi(record, ButceColumns.kullanilanTutar, mevcut),
+            bloke: sayi(record, ButceColumns.blokeTutar, mevcut),
         };
     });
 
@@ -57,6 +58,7 @@ export function eksikSutunlar(dataset: DataSet): string[] {
         [ButceColumns.donem, "Dönem"],
         [ButceColumns.toplamButce, "Toplam Bütçe"],
         [ButceColumns.kullanilanTutar, "Kullanılan Tutar"],
+        [ButceColumns.blokeTutar, "Bloke Tutar"],
     ];
 
     return gerekli.filter(([ad]) => !mevcut.has(ad)).map(([, etiket]) => etiket);

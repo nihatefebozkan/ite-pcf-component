@@ -29,6 +29,8 @@ export const Talep = {
     id: `${PREFIX}taleplerid`,
     talepMetni: `${PREFIX}talepmetni`,
     durum: `${PREFIX}durum`,
+    /** AI'ın belirlediği kategori; siparişler bunun altında gruplanıyor. */
+    urunTipi: `${PREFIX}uruntipi`,
 } as const;
 
 /** Talepler.Durum seçenek değerleri — ortamdan doğrulandı. */
@@ -41,6 +43,8 @@ export const DurumDegerleri = {
     siparisVerildi: 479490005,
     kargoda: 479490006,
     teslimEdildi: 479490007,
+    /** Muhasebe faturayı işledi; sipariş artık uçuşta değil. */
+    faturalandi: 479490008,
 } as const;
 
 /** Lookup ve Choice alanların görünen metnini taşıyan OData eki. */

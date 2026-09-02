@@ -21,6 +21,17 @@ export interface TalepBilgisi {
     metin: string | null;
     durumDegeri: number | null;
     durumEtiketi: string | null;
+    /** Kategori — siparişler bunun altında gruplanıyor. */
+    urunTipi: string | null;
+}
+
+/** Kategoriye göre gruplanmış siparişler. */
+export interface Grup {
+    kategori: string;
+    siparisler: Siparis[];
+    toplamTutar: number;
+    /** Gruptaki kontrol bekleyen sipariş sayısı. */
+    kontrolSayisi: number;
 }
 
 /** Listede uygulanabilecek süzgeçler. */

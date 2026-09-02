@@ -18,22 +18,41 @@ export function paraFormatla(tutar: number | null, paraBirimi = "TRY"): string {
 }
 
 /**
- * Tüketimi hesaplar. Toplam bütçe yoksa ya da sıfırsa yüzde anlamsız olur,
- * o durumda null döner ve çubuk çizilmez — uydurma bir oran göstermektense
- * hiç göstermemek doğru.
+ * Tüketimi hesaplar.
+ *
+ * Harcanabilir tutar `toplam − kullanılan − bloke`. Bloke, onaylanmış ama
+ * henüz faturalanmamış taahhüt; düşülmezse aynı para iki kez taahhüt edilir
+ * ve bütçe aşımı ancak faturalar geldiğinde fark edilir.
+ *
+ * Toplam bütçe yoksa ya da sıfırsa yüzde anlamsız olur; o durumda null döner
+ * ve çubuk çizilmez — uydurma bir oran göstermektense hiç göstermemek doğru.
  */
 export function tuketimHesapla(donem: ButceDonemi): Tuketim {
-    const { toplam, kullanilan } = donem;
+    const { toplam, kullanilan, bloke } = donem;
 
     if (toplam === null) {
-        return { kalan: null, yuzde: null, asim: false };
+        return {
+            kalan: null,
+            kullanilanYuzde: null,
+            blokeYuzde: null,
+            toplamYuzde: null,
+            asim: false,
+        };
     }
 
     const harcanan = kullanilan ?? 0;
-    const kalan = toplam - harcanan;
-    const yuzde = toplam > 0 ? (harcanan / toplam) * 100 : null;
+    const rezerve = bloke ?? 0;
+    const kalan = toplam - harcanan - rezerve;
 
-    return { kalan, yuzde, asim: kalan < 0 };
+    const oranla = (deger: number): number | null => (toplam > 0 ? (deger / toplam) * 100 : null);
+
+    return {
+        kalan,
+        kullanilanYuzde: oranla(harcanan),
+        blokeYuzde: oranla(rezerve),
+        toplamYuzde: oranla(harcanan + rezerve),
+        asim: kalan < 0,
+    };
 }
 
 /** Tüketim bandı: %70 altı rahat, %90 altı dikkat, üstü kritik. */

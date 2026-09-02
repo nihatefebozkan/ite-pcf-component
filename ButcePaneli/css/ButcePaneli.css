@@ -181,6 +181,21 @@
     border-radius: var(--btp-radius-pill);
     background-color: var(--btp-gri-soft);
     overflow: hidden;
+    /* İki parça yan yana: kesinleşmiş harcama + bloke. */
+    display: flex;
+}
+
+/* Bloke, harcamadan görsel olarak ayrılmalı — taahhüt edilmiş ama henüz
+   harcanmamış para. Çizgili doku "yer ayrıldı" hissini veriyor. */
+.btp-cubuk__bloke {
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--btp-border-strong),
+        var(--btp-border-strong) 4px,
+        var(--btp-gri-soft) 4px,
+        var(--btp-gri-soft) 8px
+    );
 }
 
 .btp-cubuk__dolu {

@@ -40,7 +40,8 @@ export async function talepDurumlariGetir(
         try {
             const cevap = await webAPI.retrieveMultipleRecords(
                 Talep.entity,
-                `?$select=${Talep.id},${Talep.talepMetni},${Talep.durum}&$filter=${kosul}`
+                `?$select=${Talep.id},${Talep.talepMetni},${Talep.durum},${Talep.urunTipi}` +
+                    `&$filter=${kosul}`
             );
 
             for (const kayit of cevap.entities) {
@@ -49,6 +50,10 @@ export async function talepDurumlariGetir(
                     metin: metinYada(kayit[Talep.talepMetni]),
                     durumDegeri: sayiYada(kayit[Talep.durum]),
                     durumEtiketi: metinYada(kayit[`${Talep.durum}${FORMATTED_VALUE}`]),
+                    // Choice olabilir; etiketi önce annotation'dan dene.
+                    urunTipi:
+                        metinYada(kayit[`${Talep.urunTipi}${FORMATTED_VALUE}`]) ??
+                        metinYada(kayit[Talep.urunTipi]),
                 });
             }
         } catch {

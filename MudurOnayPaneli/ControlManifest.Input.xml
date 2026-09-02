@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="MudurOnayPaneli" version="1.0.5" display-name-key="Mudur Onay Paneli" description-key="Mudurun onayini bekleyen talepleri gosterir ve gerekce ile karar vermesini saglar." control-type="virtual" >
+  <control namespace="ITE" constructor="MudurOnayPaneli" version="1.0.8" display-name-key="Mudur Onay Paneli" description-key="Mudurun onayini bekleyen talepleri gosterir ve gerekce ile karar vermesini saglar." control-type="virtual" >
     <!-- Veri Dataverse dataset'i ve Web API uzerinden gelir; harici servis yok. -->
     <external-service-usage enabled="false">
     </external-service-usage>

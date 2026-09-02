@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="PiyasaPaneli" version="1.0.0" display-name-key="Piyasa Arastirma Paneli" description-key="AI'in bulduğu piyasa fiyatlarini talebe gore gruplar; her grupta en ucuzu vurgular." control-type="virtual" >
+  <control namespace="ITE" constructor="PiyasaPaneli" version="1.0.3" display-name-key="Piyasa Arastirma Paneli" description-key="AI tarafindan bulunan piyasa fiyatlarini talebe gore gruplar; her grupta en ucuzu vurgular." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 

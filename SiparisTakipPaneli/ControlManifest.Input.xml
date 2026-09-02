@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="SiparisTakipPaneli" version="1.0.1" display-name-key="Siparis Takip Paneli" description-key="Ucustaki siparisleri durumlariyla gosterir; agent emin olamadigi e-postalari kontrol kuyruguna dusurur." control-type="virtual" >
+  <control namespace="ITE" constructor="SiparisTakipPaneli" version="1.0.4" display-name-key="Siparis Takip Paneli" description-key="Ucustaki siparisleri durumlariyla gosterir; agent emin olamadigi e-postalari kontrol kuyruguna dusurur." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 

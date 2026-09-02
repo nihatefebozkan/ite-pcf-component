@@ -20,10 +20,14 @@ function cubukDolgusu(tonSinifi: string): string {
     return `btp-cubuk__dolu btp-cubuk__dolu--${ton}`;
 }
 
-/** Güncel dönem — büyük kart, tüketim çubuğuyla. */
+/** Güncel dönem — büyük kart, iki parçalı tüketim çubuğuyla. */
 const GuncelDonem: React.FC<{ donem: ButceDonemi }> = ({ donem }) => {
-    const { kalan, yuzde, asim } = tuketimHesapla(donem);
-    const ton = tuketimTonu(yuzde, asim);
+    const { kalan, kullanilanYuzde, blokeYuzde, toplamYuzde, asim } = tuketimHesapla(donem);
+    const ton = tuketimTonu(toplamYuzde, asim);
+
+    // Aşımda çubuk %100'de durur; aşım miktarı üstteki tutarda yazıyor.
+    const kullanilanGenislik = Math.min(100, Math.max(0, kullanilanYuzde ?? 0));
+    const blokeGenislik = Math.min(100 - kullanilanGenislik, Math.max(0, blokeYuzde ?? 0));
 
     return (
         <div className={cx("btp-guncel", asim && "btp-guncel--asim")}>
@@ -32,29 +36,36 @@ const GuncelDonem: React.FC<{ donem: ButceDonemi }> = ({ donem }) => {
             <div className="btp-guncel__ust">
                 <div className="btp-guncel__kalan">
                     <span className={cx("btp-guncel__tutar", asim && "btp-guncel__tutar--asim")}>
-                        {kalan === null
-                            ? "—"
-                            : paraFormatla(asim ? Math.abs(kalan) : kalan)}
+                        {kalan === null ? "—" : paraFormatla(asim ? Math.abs(kalan) : kalan)}
                     </span>
                     <span className="btp-guncel__etiket">
                         {kalan === null
                             ? "Toplam bütçe girilmemiş"
                             : asim
                               ? "bütçe aşımı"
-                              : "kullanılabilir bütçe"}
+                              : "harcanabilir bütçe (bloke düşülmüş)"}
                     </span>
                 </div>
-                {yuzde !== null && (
-                    <span className={cx("btp-guncel__yuzde", ton)}>{yuzdeFormatla(yuzde)}</span>
+                {toplamYuzde !== null && (
+                    <span className={cx("btp-guncel__yuzde", ton)}>
+                        {yuzdeFormatla(toplamYuzde)}
+                    </span>
                 )}
             </div>
 
-            {yuzde !== null && (
+            {toplamYuzde !== null && (
                 <div className="btp-cubuk">
-                    {/* Aşımda çubuk %100'de durur; aşım miktarı üstteki tutarda yazıyor. */}
                     <div
                         className={cubukDolgusu(ton)}
-                        style={{ width: `${Math.min(100, Math.max(0, yuzde))}%` }}
+                        style={{ width: `${kullanilanGenislik}%` }}
+                        title="Kesinleşmiş harcama"
+                    />
+                    {/* Bloke ayrı bir dokuyla gösteriliyor: taahhüt edilmiş ama
+                        henüz harcanmamış para, ikisi bir görünmemeli. */}
+                    <div
+                        className="btp-cubuk__bloke"
+                        style={{ width: `${blokeGenislik}%` }}
+                        title="Rezerve edilmiş, henüz faturalanmamış"
                     />
                 </div>
             )}
@@ -62,6 +73,9 @@ const GuncelDonem: React.FC<{ donem: ButceDonemi }> = ({ donem }) => {
             <div className="btp-rakamlar">
                 <span>
                     Kullanılan <strong>{paraFormatla(donem.kullanilan)}</strong>
+                </span>
+                <span>
+                    Bloke <strong>{paraFormatla(donem.bloke)}</strong>
                 </span>
                 <span>
                     Toplam <strong>{paraFormatla(donem.toplam)}</strong>
@@ -73,19 +87,22 @@ const GuncelDonem: React.FC<{ donem: ButceDonemi }> = ({ donem }) => {
 
 /** Geçmiş dönemler — kompakt satırlar. */
 const GecmisSatir: React.FC<{ donem: ButceDonemi }> = ({ donem }) => {
-    const { yuzde, asim } = tuketimHesapla(donem);
-    const ton = tuketimTonu(yuzde, asim);
+    const { kullanilanYuzde, blokeYuzde, toplamYuzde, asim } = tuketimHesapla(donem);
+    const ton = tuketimTonu(toplamYuzde, asim);
+
+    const kullanilanGenislik = Math.min(100, Math.max(0, kullanilanYuzde ?? 0));
+    const blokeGenislik = Math.min(100 - kullanilanGenislik, Math.max(0, blokeYuzde ?? 0));
 
     return (
         <div className="btp-satir">
             <span className="btp-satir__donem">{donem.donem ?? "—"}</span>
 
             <div className="btp-cubuk">
-                {yuzde !== null && (
-                    <div
-                        className={cubukDolgusu(ton)}
-                        style={{ width: `${Math.min(100, Math.max(0, yuzde))}%` }}
-                    />
+                {toplamYuzde !== null && (
+                    <>
+                        <div className={cubukDolgusu(ton)} style={{ width: `${kullanilanGenislik}%` }} />
+                        <div className="btp-cubuk__bloke" style={{ width: `${blokeGenislik}%` }} />
+                    </>
                 )}
             </div>
 
@@ -93,7 +110,7 @@ const GecmisSatir: React.FC<{ donem: ButceDonemi }> = ({ donem }) => {
                 <span className="btp-satir__tutar">
                     {paraFormatla(donem.kullanilan)} / {paraFormatla(donem.toplam)}
                 </span>
-                <span className={cx("btp-rozet", ton)}>{yuzdeFormatla(yuzde)}</span>
+                <span className={cx("btp-rozet", ton)}>{yuzdeFormatla(toplamYuzde)}</span>
             </div>
         </div>
     );

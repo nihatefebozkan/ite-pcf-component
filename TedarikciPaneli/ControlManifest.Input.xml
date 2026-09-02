@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="TedarikciPaneli" version="1.0.1" display-name-key="Tedarikci Paneli" description-key="Tedarikci havuzunu performans gostergeleriyle listeler; siparis e-postasi gonderilemeyecek tedarikcileri isaretler." control-type="virtual" >
+  <control namespace="ITE" constructor="TedarikciPaneli" version="1.0.4" display-name-key="Tedarikci Paneli" description-key="Tedarikci havuzunu performans gostergeleriyle listeler; siparis e-postasi gonderilemeyecek tedarikcileri isaretler." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 

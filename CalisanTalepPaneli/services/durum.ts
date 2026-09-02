@@ -34,6 +34,10 @@ const ADIM_INDEKSI: Record<number, number> = {
     [DurumDegerleri.siparisVerildi]: 4,
     [DurumDegerleri.kargoda]: 5,
     [DurumDegerleri.teslimEdildi]: 6,
+    // Faturalandı, çalışan açısından teslimattan sonraki bir muhasebe adımı.
+    // Ayrı bir satır açmak yerine son adıma eşleniyor: ekipman elinde,
+    // "fatura işlendi" bilgisi ona bir şey söylemiyor.
+    [DurumDegerleri.faturalandi]: 6,
 };
 
 export interface DurumKonumu {
@@ -54,7 +58,12 @@ export function durumKonumu(durumDegeri: number | null): DurumKonumu {
 /** Durum rozetinin renk sınıfı. */
 export function durumTonu(durumDegeri: number | null): string {
     if (durumDegeri === DurumDegerleri.reddedildi) return "ctp-tone--red";
-    if (durumDegeri === DurumDegerleri.teslimEdildi) return "ctp-tone--yesil";
+    if (
+        durumDegeri === DurumDegerleri.teslimEdildi ||
+        durumDegeri === DurumDegerleri.faturalandi
+    ) {
+        return "ctp-tone--yesil";
+    }
     if (durumDegeri === DurumDegerleri.onayBekliyor) return "ctp-tone--amber";
     if (durumDegeri === DurumDegerleri.talepOlusturuldu) return "ctp-tone--gri";
     if (durumDegeri === null) return "ctp-tone--gri";

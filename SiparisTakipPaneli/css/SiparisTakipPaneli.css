@@ -169,6 +169,92 @@
     row-gap: var(--stp-md);
 }
 
+/* ---------- Kategori grupları ---------- */
+
+.stp-gruplar {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--stp-md);
+}
+
+.stp-grup {
+    background-color: var(--stp-surface);
+    border: 1px solid var(--stp-border);
+    border-radius: var(--stp-radius-lg);
+    overflow: hidden;
+}
+
+.stp-grup__baslik {
+    width: 100%;
+    font-family: inherit;
+    background-color: var(--stp-sunken);
+    border: 0;
+    border-bottom: 1px solid transparent;
+    padding: var(--stp-md) var(--stp-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--stp-md);
+    cursor: pointer;
+    text-align: left;
+}
+
+.stp-grup__baslik:hover {
+    background-color: var(--stp-secondary-soft);
+}
+
+.stp-grup__baslik:focus-visible {
+    outline: 2px solid var(--stp-secondary);
+    outline-offset: -2px;
+}
+
+.stp-grup__baslik[aria-expanded="true"] {
+    border-bottom-color: var(--stp-border);
+}
+
+.stp-grup__ok {
+    font-size: 12px;
+    color: var(--stp-text-faint);
+    flex-shrink: 0;
+}
+
+.stp-grup__kategori {
+    font-size: 14.5px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--stp-primary);
+    overflow-wrap: anywhere;
+}
+
+.stp-grup__sayi {
+    font-size: 12.5px;
+    line-height: 18px;
+    color: var(--stp-text-muted);
+    white-space: nowrap;
+}
+
+.stp-grup__tutar {
+    margin-left: auto;
+    font-size: 13.5px;
+    line-height: 18px;
+    font-weight: 700;
+    color: var(--stp-primary);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.stp-grup__icerik {
+    padding: var(--stp-md) var(--stp-md) var(--stp-lg);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--stp-md);
+}
+
+/* Grup içindeki kartlar zaten çerçeveli bir kutunun içinde; ikinci bir
+   çerçeve katmanı görsel gürültü yaratıyor. */
+.stp-grup__icerik .stp-kart {
+    border-color: var(--stp-border);
+}
+
 .stp-kart {
     background-color: var(--stp-surface);
     border: 1px solid var(--stp-border);

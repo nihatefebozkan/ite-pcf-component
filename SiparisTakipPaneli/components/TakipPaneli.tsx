@@ -2,7 +2,7 @@ import * as React from "react";
 import { Siparis, Suzgec, TalepBilgisi } from "../types";
 import { talepDurumlariGetir } from "../services/talepDurumlari";
 import { SiparisKarti } from "./SiparisKarti";
-import { cx, ucustaMi } from "./theme";
+import { cx, gruplaKategoriye, paraFormatla, ucustaMi } from "./theme";
 
 export interface ITakipPaneliProps {
     siparisler: Siparis[];
@@ -33,6 +33,8 @@ export const TakipPaneli: React.FC<ITakipPaneliProps> = (props) => {
 
     const [suzgec, setSuzgec] = React.useState<Suzgec>("ucusta");
     const [talepler, setTalepler] = React.useState<Map<string, TalepBilgisi>>(new Map());
+    /** Kullanıcının elle açtığı/kapattığı gruplar; varsayılan davranışı ezer. */
+    const [acikGruplar, setAcikGruplar] = React.useState<Record<string, boolean>>({});
 
     // Bağımlılık dizi kimliği değil id listesinin kendisi olsun diye
     // birleştirilmiş metin kullanılıyor; aksi halde her render sorgu atardı.
@@ -79,15 +81,33 @@ export const TakipPaneli: React.FC<ITakipPaneliProps> = (props) => {
             return true;
         });
 
-        // Kontrol bekleyenler her zaman en üstte — gözden kaçmamaları gereken
-        // tek grup onlar.
-        return suzulmus.slice().sort((a, b) => {
-            if (a.kontrolGerekli !== b.kontrolGerekli) return a.kontrolGerekli ? -1 : 1;
-            const at = a.sonEpostaTarihi ?? a.olusturulma;
-            const bt = b.sonEpostaTarihi ?? b.olusturulma;
-            return (at?.getTime() ?? 0) - (bt?.getTime() ?? 0);
-        });
+        return suzulmus;
     }, [siparisler, talepler, suzgec]);
+
+    const gruplar = React.useMemo(
+        () => gruplaKategoriye(gorunenler, talepler),
+        [gorunenler, talepler]
+    );
+
+    /**
+     * Grup varsayılan olarak kapalı; kontrol bekleyen sipariş içerenler açık
+     * başlar. Kuyruğun katlanıp gözden kaybolmaması gereken tek grup o.
+     */
+    const grupAcikMi = React.useCallback(
+        (grup: { kategori: string; kontrolSayisi: number }): boolean =>
+            acikGruplar[grup.kategori] ?? grup.kontrolSayisi > 0,
+        [acikGruplar]
+    );
+
+    const grupDegistir = React.useCallback(
+        (grup: { kategori: string; kontrolSayisi: number }) => {
+            setAcikGruplar((onceki) => ({
+                ...onceki,
+                [grup.kategori]: !(onceki[grup.kategori] ?? grup.kontrolSayisi > 0),
+            }));
+        },
+        []
+    );
 
     const rootStyle: React.CSSProperties =
         allocatedHeight && allocatedHeight > 0 ? { height: `${allocatedHeight}px` } : {};
@@ -175,15 +195,53 @@ export const TakipPaneli: React.FC<ITakipPaneliProps> = (props) => {
                     </span>
                 </div>
             ) : (
-                <div className="stp-liste">
-                    {gorunenler.map((siparis) => (
-                        <SiparisKarti
-                            key={siparis.id}
-                            siparis={siparis}
-                            talep={siparis.talepId ? (talepler.get(siparis.talepId) ?? null) : null}
-                            paraBirimi={paraBirimi}
-                        />
-                    ))}
+                <div className="stp-gruplar">
+                    {gruplar.map((grup) => {
+                        const acik = grupAcikMi(grup);
+                        return (
+                            <div key={grup.kategori} className="stp-grup">
+                                <button
+                                    type="button"
+                                    className="stp-grup__baslik"
+                                    onClick={() => grupDegistir(grup)}
+                                    aria-expanded={acik}
+                                >
+                                    <span className="stp-grup__ok" aria-hidden="true">
+                                        {acik ? "▾" : "▸"}
+                                    </span>
+                                    <span className="stp-grup__kategori">{grup.kategori}</span>
+                                    <span className="stp-grup__sayi">
+                                        {grup.siparisler.length} sipariş
+                                    </span>
+                                    {grup.kontrolSayisi > 0 && (
+                                        <span className="stp-rozet stp-tone--red">
+                                            {grup.kontrolSayisi} kontrol
+                                        </span>
+                                    )}
+                                    <span className="stp-grup__tutar">
+                                        {paraFormatla(grup.toplamTutar, paraBirimi)}
+                                    </span>
+                                </button>
+
+                                {acik && (
+                                    <div className="stp-grup__icerik">
+                                        {grup.siparisler.map((siparis) => (
+                                            <SiparisKarti
+                                                key={siparis.id}
+                                                siparis={siparis}
+                                                talep={
+                                                    siparis.talepId
+                                                        ? (talepler.get(siparis.talepId) ?? null)
+                                                        : null
+                                                }
+                                                paraBirimi={paraBirimi}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>
