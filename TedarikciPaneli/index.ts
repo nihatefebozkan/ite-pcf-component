@@ -3,6 +3,8 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import { TedarikciPaneliRoot, ITedarikciPaneliProps } from "./components/TedarikciPaneliRoot";
 import { eksikSutunlar, tedarikcileriEsle } from "./services/datasetMapper";
 
+const TEDARIKCI_ENTITY = "cr545_tedarikciler";
+
 export class TedarikciPaneli implements ComponentFramework.ReactControl<IInputs, IOutputs> {
     public init(
         context: ComponentFramework.Context<IInputs>,
@@ -22,13 +24,23 @@ export class TedarikciPaneli implements ComponentFramework.ReactControl<IInputs,
             eksikSutunlar: dataset.loading ? [] : eksikSutunlar(dataset),
             allocatedWidth: context.mode.allocatedWidth > 0 ? context.mode.allocatedWidth : null,
             allocatedHeight: context.mode.allocatedHeight > 0 ? context.mode.allocatedHeight : null,
+            webAPI: context.webAPI,
+            onKayitAc: (id: string) => {
+                // Desteklenen yol; window.open yerine bunu kullanıyoruz ki
+                // uygulama bağlamı korunsun ve açılır pencere engeline takılmasın.
+                void context.navigation.openForm({
+                    entityName: TEDARIKCI_ENTITY,
+                    entityId: id,
+                    openInNewWindow: true,
+                });
+            },
             onRefresh: () => dataset.refresh(),
         };
 
         return React.createElement(TedarikciPaneliRoot, props);
     }
 
-    /** Salt okunur ekran; Web API kullanmıyor, forma dönen çıktısı yok. */
+    /** Salt okunur ekran; forma dönen çıktısı yok. */
     public getOutputs(): IOutputs {
         return {};
     }

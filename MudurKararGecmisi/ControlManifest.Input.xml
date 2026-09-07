@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="MudurKararGecmisi" version="1.0.6" display-name-key="Mudur Karar Gecmisi" description-key="Mudurun verdigi onay ve ret kararlarini talep metniyle birlikte gosterir." control-type="virtual" >
+  <control namespace="ITE" constructor="MudurKararGecmisi" version="1.0.12" display-name-key="Mudur Karar Gecmisi" description-key="Mudurun verdigi onay ve ret kararlarini talep metniyle birlikte gosterir." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="FaturaPaneli" version="1.0.3" display-name-key="Fatura Paneli" description-key="Faturalari siparis tutariyla karsilastirir; uyusmayanlari isaretler." control-type="virtual" >
+  <control namespace="ITE" constructor="FaturaPaneli" version="1.0.9" display-name-key="Fatura Paneli" description-key="Faturalari siparis tutariyla karsilastirir; uyusmayanlari isaretler." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 

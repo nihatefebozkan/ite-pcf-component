@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Suzgec, Tedarikci } from "../types";
+import { SiparisKaydi, Suzgec, Tedarikci } from "../types";
+import { siparisGecmisiGetir } from "../services/siparisGecmisi";
 import { TedarikciKarti } from "./TedarikciKarti";
-import { cx } from "./theme";
+import { cx, gruplaTedarikciye, paraFormatla, tarihFormatla } from "./theme";
 
 export interface ITedarikciPaneliProps {
     tedarikciler: Tedarikci[];
@@ -10,6 +11,8 @@ export interface ITedarikciPaneliProps {
     eksikSutunlar: string[];
     allocatedWidth: number | null;
     allocatedHeight: number | null;
+    webAPI: ComponentFramework.WebApi;
+    onKayitAc: (id: string) => void;
     onRefresh: () => void;
 }
 
@@ -23,10 +26,38 @@ export const TedarikciPaneliRoot: React.FC<ITedarikciPaneliProps> = (props) => {
         eksikSutunlar,
         allocatedWidth,
         allocatedHeight,
+        webAPI,
+        onKayitAc,
         onRefresh,
     } = props;
 
     const [suzgec, setSuzgec] = React.useState<Suzgec>("tumu");
+    /** Kullanıcının elle açtığı/kapattığı gruplar; varsayılan davranışı ezer. */
+    const [acikGruplar, setAcikGruplar] = React.useState<Record<string, boolean>>({});
+    const [siparisHaritasi, setSiparisHaritasi] = React.useState<Map<string, SiparisKaydi[]>>(
+        new Map()
+    );
+
+    // Bağımlılık dizi kimliği değil id listesinin kendisi olsun diye
+    // birleştirilmiş metin kullanılıyor; aksi halde her render sorgu atardı.
+    const tedarikciIdAnahtari = tedarikciler.map((t) => t.id).join(",");
+
+    React.useEffect(() => {
+        if (tedarikciIdAnahtari.length === 0) {
+            setSiparisHaritasi(new Map());
+            return;
+        }
+
+        let iptal = false;
+        void (async () => {
+            const harita = await siparisGecmisiGetir(webAPI, tedarikciIdAnahtari.split(","));
+            if (!iptal) setSiparisHaritasi(harita);
+        })();
+
+        return () => {
+            iptal = true;
+        };
+    }, [webAPI, tedarikciIdAnahtari]);
 
     const sayilar = React.useMemo(() => {
         let anlasmali = 0;
@@ -38,23 +69,37 @@ export const TedarikciPaneliRoot: React.FC<ITedarikciPaneliProps> = (props) => {
         return { anlasmali, epostasiz };
     }, [tedarikciler]);
 
-    const gorunenler = React.useMemo(() => {
-        const suzulmus = tedarikciler.filter((t) => {
-            if (suzgec === "anlasmali") return t.anlasmali;
-            if (suzgec === "epostasiz") return !t.email;
-            return true;
-        });
+    const gorunenler = React.useMemo(
+        () =>
+            tedarikciler.filter((t) => {
+                if (suzgec === "anlasmali") return t.anlasmali;
+                if (suzgec === "epostasiz") return !t.email;
+                return true;
+            }),
+        [tedarikciler, suzgec]
+    );
 
-        // E-postası eksik olanlar en üstte — düzeltilmesi gereken tek grup onlar.
-        return suzulmus
-            .slice()
-            .sort((a, b) => {
-                const ae = a.email ? 1 : 0;
-                const be = b.email ? 1 : 0;
-                if (ae !== be) return ae - be;
-                return a.ad.localeCompare(b.ad, "tr-TR");
-            });
-    }, [tedarikciler, suzgec]);
+    const gruplar = React.useMemo(
+        () => gruplaTedarikciye(gorunenler, siparisHaritasi),
+        [gorunenler, siparisHaritasi]
+    );
+
+    /**
+     * Grup varsayılan olarak kapalı; e-postası eksik satır içerenler açık başlar.
+     * Katlanınca gözden kaybolmaması gereken tek grup o.
+     */
+    const grupAcikMi = React.useCallback(
+        (grup: { ad: string; epostasizSayisi: number }): boolean =>
+            acikGruplar[grup.ad] ?? grup.epostasizSayisi > 0,
+        [acikGruplar]
+    );
+
+    const grupDegistir = React.useCallback((grup: { ad: string; epostasizSayisi: number }) => {
+        setAcikGruplar((onceki) => ({
+            ...onceki,
+            [grup.ad]: !(onceki[grup.ad] ?? grup.epostasizSayisi > 0),
+        }));
+    }, []);
 
     const rootStyle: React.CSSProperties =
         allocatedHeight && allocatedHeight > 0 ? { height: `${allocatedHeight}px` } : {};
@@ -136,10 +181,127 @@ export const TedarikciPaneliRoot: React.FC<ITedarikciPaneliProps> = (props) => {
                     <span className="tdp-bos__metin">Başka bir süzgeç deneyebilirsin.</span>
                 </div>
             ) : (
-                <div className="tdp-liste">
-                    {gorunenler.map((tedarikci) => (
-                        <TedarikciKarti key={tedarikci.id} tedarikci={tedarikci} />
-                    ))}
+                <div className="tdp-gruplar">
+                    {gruplar.map((grup) => {
+                        const acik = grupAcikMi(grup);
+                        return (
+                            <div key={grup.ad} className="tdp-grup">
+                                <div className="tdp-grup__baslik">
+                                    <button
+                                        type="button"
+                                        className="tdp-grup__ac"
+                                        onClick={() => grupDegistir(grup)}
+                                        aria-expanded={acik}
+                                    >
+                                        <span className="tdp-grup__ok" aria-hidden="true">
+                                            {acik ? "▾" : "▸"}
+                                        </span>
+                                        <span className="tdp-grup__bilgi">
+                                            <span className="tdp-grup__satir1">
+                                                <span className="tdp-grup__ad">{grup.ad}</span>
+                                                {grup.anlasmali && (
+                                                    <span className="tdp-rozet tdp-rozet--anlasmali">
+                                                        ✓ Anlaşmalı
+                                                    </span>
+                                                )}
+                                                {grup.epostasizSayisi > 0 && (
+                                                    <span className="tdp-rozet tdp-tone--red">
+                                                        e-posta eksik
+                                                    </span>
+                                                )}
+                                            </span>
+                                            <span className="tdp-grup__satir2">
+                                                {grup.kategoriler.length > 0
+                                                    ? grup.kategoriler.join(" · ")
+                                                    : "Kategori girilmemiş"}
+                                            </span>
+                                        </span>
+                                    </button>
+
+                                    {grup.email ? (
+                                        <a
+                                            className="tdp-grup__eposta"
+                                            href={`mailto:${grup.email}`}
+                                            title="E-posta gönder"
+                                        >
+                                            {grup.email}
+                                        </a>
+                                    ) : (
+                                        <span className="tdp-grup__eposta tdp-grup__eposta--yok">
+                                            adres yok
+                                        </span>
+                                    )}
+
+                                    <span className="tdp-grup__sayilar">
+                                        <span className="tdp-grup__siparis">
+                                            {grup.siparisler.length} sipariş
+                                        </span>
+                                        <span className="tdp-grup__tutar">
+                                            {paraFormatla(grup.toplamTutar)}
+                                        </span>
+                                    </span>
+                                </div>
+
+                                {acik && (
+                                    <div className="tdp-grup__govde">
+                                        <div className="tdp-grup__icerik">
+                                            {grup.tedarikciler.map((tedarikci) => (
+                                                <TedarikciKarti
+                                                    key={tedarikci.id}
+                                                    tedarikci={tedarikci}
+                                                    onAc={onKayitAc}
+                                                />
+                                            ))}
+                                        </div>
+
+                                        <div className="tdp-gecmis">
+                                            <h3 className="tdp-gecmis__baslik">
+                                                Bu firmadan alınanlar
+                                            </h3>
+
+                                            {grup.siparisler.length === 0 ? (
+                                                <p className="tdp-gecmis__bos">
+                                                    Bu firmaya henüz sipariş verilmemiş.
+                                                </p>
+                                            ) : (
+                                                <ul className="tdp-gecmis__liste">
+                                                    {grup.siparisler.map((siparis) => (
+                                                        <li
+                                                            key={siparis.id}
+                                                            className="tdp-gecmis__satir"
+                                                        >
+                                                            <span className="tdp-gecmis__no">
+                                                                {siparis.siparisNo ?? "—"}
+                                                            </span>
+                                                            <span className="tdp-gecmis__tarih">
+                                                                {tarihFormatla(
+                                                                    siparis.siparisTarihi
+                                                                )}
+                                                            </span>
+                                                            <span
+                                                                className={cx(
+                                                                    "tdp-gecmis__durum",
+                                                                    siparis.teslimTarihi &&
+                                                                        "tdp-gecmis__durum--teslim"
+                                                                )}
+                                                            >
+                                                                {siparis.teslimTarihi
+                                                                    ? `Teslim · ${tarihFormatla(siparis.teslimTarihi)}`
+                                                                    : "Yolda"}
+                                                            </span>
+                                                            <span className="tdp-gecmis__tutar">
+                                                                {paraFormatla(siparis.tutar)}
+                                                            </span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>

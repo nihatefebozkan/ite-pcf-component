@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="SatinAlmaTalepPaneli" version="1.0.3" display-name-key="Satin Alma Talep Paneli" description-key="Tedarikci secimi bekleyen talepleri listeler; piyasa arastirmasi olmayanlari isaretler." control-type="virtual" >
+  <control namespace="ITE" constructor="SatinAlmaTalepPaneli" version="1.0.9" display-name-key="Satin Alma Talep Paneli" description-key="Tedarikci secimi bekleyen talepleri listeler; piyasa arastirmasi olmayanlari isaretler." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 

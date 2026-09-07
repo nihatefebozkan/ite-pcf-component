@@ -112,7 +112,11 @@ export function kdvKirilimi(
 
 /**
  * PDF ekinin indirme adresi. File sütununun içeriğine Web API üzerinden
- * doğrudan erişiliyor; uygulama içinde göreli yol yeterli.
+ * doğrudan erişiliyor; uygulama içinde göreli yol yeterli — oturum çerezi
+ * yetkilendirmeyi hallediyor, ayrıca belirteç göndermeye gerek yok.
+ *
+ * Bağlantıya `download` özniteliği veriliyor; aynı köken olduğu için tarayıcı
+ * dosyayı açmak yerine indiriyor.
  */
 export function pdfAdresi(faturaId: string): string {
     return `/api/data/v9.2/${Fatura.entitySet}(${faturaId})/${Fatura.pdfAlani}/$value`;

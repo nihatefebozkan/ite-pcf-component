@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="ButcePaneli" version="1.0.4" display-name-key="Butce Paneli" description-key="Donemlik sirket butcesini tuketim cubuklariyla gosterir." control-type="virtual" >
+  <control namespace="ITE" constructor="ButcePaneli" version="1.0.10" display-name-key="Butce Paneli" description-key="Donemlik sirket butcesini tuketim cubuklariyla gosterir." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 

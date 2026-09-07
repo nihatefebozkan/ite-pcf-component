@@ -7,8 +7,13 @@ export const FaturaColumns = {
     tutar: `${PREFIX}tutar`,
     kdvOrani: `${PREFIX}kdvorani`,
     siparis: `${PREFIX}siparis`,
-    /** File sütunu; dosya adı doluysa ek vardır. */
+    /**
+     * File sütununun adı iki farklı sütunda görünebiliyor: görünüme dosya
+     * alanının kendisi eklenmişse `pdfdosya`, ad alanı eklenmişse
+     * `pdfdosya_name` geliyor. Hangisi eklenmişse o okunuyor.
+     */
     pdfAdi: `${PREFIX}pdfdosya_name`,
+    pdfDosya: `${PREFIX}pdfdosya`,
     olusturulma: "createdon",
 } as const;
 

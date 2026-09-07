@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Fatura, SiparisBilgisi } from "../types";
+import { pdfAc, pdfIndir } from "../services/pdfIndir";
 import {
     cx,
     durumTonu,
@@ -8,7 +9,6 @@ import {
     eslestir,
     kdvKirilimi,
     paraFormatla,
-    pdfAdresi,
     siparisEtiketi,
     tarihFormatla,
 } from "./theme";
@@ -23,11 +23,63 @@ export const FaturaKarti: React.FC<IFaturaKartiProps> = ({ fatura, siparis }) =>
     const sonuc = eslestir(fatura, siparis);
     const uyusmuyor = sonuc.tip === "uyusmuyor";
 
+    const [iniyor, setIniyor] = React.useState(false);
+    const [indirmeHatasi, setIndirmeHatasi] = React.useState<string | null>(null);
+
+    const indir = React.useCallback(
+        (olay: React.MouseEvent) => {
+            // Kartın kendisi de tıklanabilir; düğme onun yerine geçmesin.
+            olay.stopPropagation();
+            if (!fatura.pdfAdi) return;
+
+            setIniyor(true);
+            setIndirmeHatasi(null);
+
+            void pdfIndir(fatura.id, fatura.pdfAdi, fatura.faturaNo)
+                .catch((hata: unknown) => {
+                    setIndirmeHatasi(hata instanceof Error ? hata.message : "Bilinmeyen hata");
+                })
+                .finally(() => setIniyor(false));
+        },
+        [fatura.id, fatura.pdfAdi, fatura.faturaNo]
+    );
+
+    const ac = React.useCallback(() => {
+        if (!fatura.pdfAdi) return;
+
+        setIndirmeHatasi(null);
+        void pdfAc(fatura.id).catch((hata: unknown) => {
+            setIndirmeHatasi(hata instanceof Error ? hata.message : "Bilinmeyen hata");
+        });
+    }, [fatura.id, fatura.pdfAdi]);
+
     // Eşleştirme faturanın KDV dahil mi olduğunu söylüyor; kırılım da ona göre.
     const kirilim = kdvKirilimi(fatura.tutar, fatura.kdvOrani, sonuc.tip === "kdvDahil");
 
+    const pdfVar = Boolean(fatura.pdfAdi);
+
     return (
-        <div className={cx("fap-kart", uyusmuyor && "fap-kart--uyusmuyor")}>
+        <div
+            className={cx(
+                "fap-kart",
+                uyusmuyor && "fap-kart--uyusmuyor",
+                pdfVar && "fap-kart--acilir"
+            )}
+            onClick={pdfVar ? ac : undefined}
+            onKeyDown={
+                pdfVar
+                    ? (olay) => {
+                          if (olay.key === "Enter" || olay.key === " ") {
+                              olay.preventDefault();
+                              ac();
+                          }
+                      }
+                    : undefined
+            }
+            role={pdfVar ? "button" : undefined}
+            tabIndex={pdfVar ? 0 : undefined}
+            title={pdfVar ? "PDF'i yeni sekmede aç" : undefined}
+        >
             <div className="fap-kart__ust">
                 <div className="fap-kart__baslik-blok">
                     <p className="fap-kart__no">{fatura.faturaNo ?? "(numara yok)"}</p>
@@ -83,15 +135,22 @@ export const FaturaKarti: React.FC<IFaturaKartiProps> = ({ fatura, siparis }) =>
                 <span className={cx("fap-rozet", eslesmeTonu(sonuc))}>
                     {eslesmeEtiketi(sonuc)}
                 </span>
-                {fatura.pdfAdi && (
-                    <a
-                        className="fap-pdf"
-                        href={pdfAdresi(fatura.id)}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                {fatura.pdfAdi ? (
+                    <button
+                        type="button"
+                        className={cx("fap-pdf", indirmeHatasi && "fap-pdf--hata")}
+                        onClick={indir}
+                        disabled={iniyor}
+                        title={indirmeHatasi ?? fatura.pdfAdi}
                     >
-                        PDF&apos;i aç ↗
-                    </a>
+                        {iniyor
+                            ? "İndiriliyor…"
+                            : indirmeHatasi
+                              ? "İndirilemedi · tekrar dene"
+                              : "↓ PDF indir"}
+                    </button>
+                ) : (
+                    <span className="fap-pdf fap-pdf--yok">PDF eki yok</span>
                 )}
                 <span className="fap-kart__tarih">{tarihFormatla(fatura.olusturulma)}</span>
             </div>

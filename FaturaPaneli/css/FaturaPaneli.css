@@ -362,11 +362,64 @@
     font-weight: 600;
     color: var(--fap-secondary);
     text-decoration: none;
+    border: 1px solid var(--fap-secondary);
+    border-radius: var(--fap-radius-pill);
+    padding: 3px 11px;
+    white-space: nowrap;
 }
 
-.fap-pdf:hover,
-.fap-pdf:focus-visible {
-    text-decoration: underline;
+/* PDF'i olan fatura kartı tıklanabilir; eki olmayan kart öyle görünmesin. */
+.fap-kart--acilir {
+    cursor: pointer;
+}
+
+.fap-kart--acilir:hover {
+    border-color: var(--fap-secondary);
+}
+
+.fap-kart--acilir:focus-visible {
+    outline: 2px solid var(--fap-secondary);
+    outline-offset: 2px;
+}
+
+button.fap-pdf {
+    font-family: inherit;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+button.fap-pdf:hover:not(:disabled) {
+    background-color: var(--fap-secondary);
+    color: #ffffff;
+}
+
+button.fap-pdf:focus-visible {
+    outline: 2px solid var(--fap-secondary);
+    outline-offset: 2px;
+}
+
+button.fap-pdf:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.fap-pdf--hata {
+    color: var(--fap-red);
+    border-color: var(--fap-red);
+}
+
+button.fap-pdf--hata:hover:not(:disabled) {
+    background-color: var(--fap-red);
+    color: #ffffff;
+}
+
+/* Eki olmayan fatura sessizce boş görünmesin; muhasebeci PDF'in
+   gerçekten yok olduğunu bilsin. */
+.fap-pdf--yok {
+    color: var(--fap-text-faint);
+    border-color: var(--fap-border-strong);
+    border-style: dashed;
+    font-weight: 500;
 }
 
 /* ---------- Bildirim, boş, yükleniyor ---------- */

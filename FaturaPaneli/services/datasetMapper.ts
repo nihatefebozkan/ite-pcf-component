@@ -85,7 +85,9 @@ export function faturalariEsle(dataset: DataSet): Fatura[] {
                 ? guidCikar(record.getValue(FaturaColumns.siparis))
                 : null,
             siparisAdi: metin(record, FaturaColumns.siparis, mevcut),
-            pdfAdi: metin(record, FaturaColumns.pdfAdi, mevcut),
+            pdfAdi:
+                metin(record, FaturaColumns.pdfAdi, mevcut) ??
+                metin(record, FaturaColumns.pdfDosya, mevcut),
             olusturulma: tarih(record, FaturaColumns.olusturulma, mevcut),
         };
     });
@@ -102,5 +104,13 @@ export function eksikSutunlar(dataset: DataSet): string[] {
         [FaturaColumns.siparis, "Sipariş"],
     ];
 
-    return gerekli.filter(([ad]) => !mevcut.has(ad)).map(([, etiket]) => etiket);
+    const eksik = gerekli.filter(([ad]) => !mevcut.has(ad)).map(([, etiket]) => etiket);
+
+    // PDF iki sütundan biriyle karşılanıyor; ikisi de yoksa ek varken bile
+    // "PDF eki yok" görünür, bu yüzden ayrıca uyarılıyor.
+    if (!mevcut.has(FaturaColumns.pdfAdi) && !mevcut.has(FaturaColumns.pdfDosya)) {
+        eksik.push("PDF Dosya");
+    }
+
+    return eksik;
 }

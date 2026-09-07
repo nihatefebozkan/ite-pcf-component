@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="TedarikciKarsilastirma" version="1.0.16" display-name-key="Tedarikci Karsilastirma" description-key="Talebe ait ic tedarikci tekliflerini skorlar ve piyasa arastirmasi bulgulariyla yan yana gosterir." control-type="virtual" >
+  <control namespace="ITE" constructor="TedarikciKarsilastirma" version="1.0.22" display-name-key="Tedarikci Karsilastirma" description-key="Talebe ait ic tedarikci tekliflerini skorlar ve piyasa arastirmasi bulgulariyla yan yana gosterir." control-type="virtual" >
     <!-- Veri yalnizca Dataverse Web API uzerinden okunur; harici servis kullanilmaz. -->
     <external-service-usage enabled="false">
     </external-service-usage>

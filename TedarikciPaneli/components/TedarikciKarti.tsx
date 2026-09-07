@@ -4,6 +4,7 @@ import { cx, gecTeslimatTonu, paraFormatla, sayiFormatla } from "./theme";
 
 export interface ITedarikciKartiProps {
     tedarikci: Tedarikci;
+    onAc: (id: string) => void;
 }
 
 interface IMetrikProps {
@@ -18,20 +19,24 @@ const Metrik: React.FC<IMetrikProps> = ({ etiket, deger }) => (
     </div>
 );
 
-export const TedarikciKarti: React.FC<ITedarikciKartiProps> = ({ tedarikci }) => {
+export const TedarikciKarti: React.FC<ITedarikciKartiProps> = ({ tedarikci, onAc }) => {
     const epostasiz = !tedarikci.email;
 
     return (
-        <div className={cx("tdp-kart", epostasiz && "tdp-kart--epostasiz")}>
+        <button
+            type="button"
+            className={cx("tdp-kart", epostasiz && "tdp-kart--epostasiz")}
+            onClick={() => onAc(tedarikci.id)}
+            title="Kaydı yeni sekmede aç"
+        >
             <div className="tdp-kart__ust">
                 <div className="tdp-kart__baslik-blok">
-                    <h3 className="tdp-kart__ad">{tedarikci.ad}</h3>
+                    <h3 className="tdp-kart__ad">
+                        {tedarikci.urunKategorisi ?? tedarikci.ad}
+                    </h3>
                     <div className="tdp-kart__rozetler">
                         {tedarikci.anlasmali && (
                             <span className="tdp-rozet tdp-rozet--anlasmali">✓ Anlaşmalı</span>
-                        )}
-                        {tedarikci.urunKategorisi && (
-                            <span className="tdp-etiket">{tedarikci.urunKategorisi}</span>
                         )}
                     </div>
                 </div>
@@ -76,6 +81,6 @@ export const TedarikciKarti: React.FC<ITedarikciKartiProps> = ({ tedarikci }) =>
                     deger={sayiFormatla(tedarikci.gecmisSiparisSayisi)}
                 />
             </div>
-        </div>
+        </button>
     );
 };

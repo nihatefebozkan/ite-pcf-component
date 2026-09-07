@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ITE" constructor="CalisanTalepPaneli" version="1.0.10" display-name-key="Calisan Talep Paneli" description-key="Calisanin kendi taleplerini gorup yeni talep actigi panel." control-type="virtual" >
+  <control namespace="ITE" constructor="CalisanTalepPaneli" version="1.0.16" display-name-key="Calisan Talep Paneli" description-key="Calisanin kendi taleplerini gorup yeni talep actigi panel." control-type="virtual" >
     <!-- Veri Dataverse dataset'i ve Web API uzerinden gelir; harici servis yok. -->
     <external-service-usage enabled="false">
     </external-service-usage>
